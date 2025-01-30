@@ -1,185 +1,97 @@
-@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --font-family-sans: 'Inter', sans-serif;
-}
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
 
-:root {
-  --sh-class: #7aa2f7;
-  --sh-sign: #89ddff;
-  --sh-string: #9ece6a;
-  --sh-keyword: #bb9af7;
-  --sh-comment: #565f89;
-  --sh-jsxliterals: #7aa2f7;
-  --sh-property: #73daca;
-  --sh-entity: #e0af68;
-}
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
 
-html {
-  min-width: 360px;
-  scrollbar-gutter: stable;
-}
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
 
-body {
-  text-rendering: optimizeLegibility;
-}
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
 
-h1,
-h2,
-h3,
-h4 {
-  text-wrap: balance;
-}
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
 
-pre {
-  background-color: #16161e;
-  border-radius: 0.5rem;
-  overflow-x: auto;
-  padding: 1rem;
-  margin: 1.5rem 0;
-  line-height: 1;
-}
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
 
-pre::-webkit-scrollbar {
-  display: none;
-}
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
 
-pre {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
 
-code {
-  font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
-  font-size: 14px;
-  padding: 0.2em 0.4em;
-  border-radius: 0.3em;
-  background-color: var(--color-gray-100);
-}
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --radius: 0.5rem;
 
-pre code {
-  background-color: transparent;
-  padding: 0;
-  border: none;
-  font-size: 14px;
-  line-height: 1.5;
-}
+    --header-height: 73px;
 
-pre code > span .sh__token--identifier {
-  color: white !important;
-}
-
-code:not(pre code) span {
-  font-weight: 500;
-  color: black !important;
-}
-
-pre code span {
-  font-weight: 500;
-}
-
-hr {
-  color: var(--color-gray-200);
-}
-
-/* Remove Safari input shadow on mobile */
-input[type='text'],
-input[type='email'] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-}
-
-table {
-  display: block;
-  max-width: fit-content;
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-.transition-element {
-  view-transition-name: lee;
-}
-
-::view-transition-old(lee) {
-  animation: fade-out 0.8s ease-in-out;
-}
-
-::view-transition-new(lee) {
-  animation: fade-in-up 0.4s ease-in-out;
-}
-
-@keyframes fade-out {
-  0% {
-    transform: translateY(0) translateX(-0.2px);
-    opacity: 1;
-    font-weight: 500;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
-  20% {
-    transform: translateY(24px) translateX(-0.2px);
-    opacity: 0.5;
-  }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
 
-  40% {
-    transform: translateY(24px) translateX(-0.2px);
-    opacity: 0.3;
-  }
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
 
-  60% {
-    transform: translateY(24px) translateX(-0.2px);
-    opacity: 0.2;
-  }
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
 
-  100% {
-    transform: translateY(24px) translateX(-0.2px);
-    opacity: 0;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+
+    --header-height: 73px;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 }
 
-@keyframes fade-in {
-  0% {
-    opacity: 0;
+@layer base {
+  * {
+    @apply border-border;
   }
-
-  40% {
-    opacity: 0.6;
-  }
-
-  60% {
-    opacity: 0.8;
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-in-up {
-  0% {
-    transform: translateY(24px) translateX(-0.2px);
-    opacity: 0;
-  }
-
-  20% {
-    transform: translateY(24px) translateX(-0.2px);
-    opacity: 0.5;
-  }
-
-  80% {
-    transform: translateY(0) translateX(-0.2px);
-    opacity: 0.7;
-  }
-
-  100% {
-    transform: translateY(0) translateX(-0.2px);
-    opacity: 1;
-  }
-}
-
-@supports (view-transition-name: none) {
-  .fade-in {
-    animation: fade-in 0.8s ease-in-out forwards;
-    opacity: 0;
+  body {
+    @apply bg-background text-foreground;
   }
 }
