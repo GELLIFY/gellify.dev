@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import path from 'path';
 
-async function getNoteSlugs(dir: string) {
+async function getDocsSlugs(dir: string) {
   const entries = await fs.readdir(dir, {
     recursive: true,
     withFileTypes: true,
@@ -19,11 +19,11 @@ async function getNoteSlugs(dir: string) {
 }
 
 export default async function sitemap() {
-  const notesDirectory = path.join(process.cwd(), 'app', 'n');
-  const slugs = await getNoteSlugs(notesDirectory);
+  const docsDirectory = path.join(process.cwd(), 'app', 'docs');
+  const slugs = await getDocsSlugs(docsDirectory);
 
-  const notes = slugs.map((slug) => ({
-    url: `https://gellify.dev/n/${slug}`,
+  const docs = slugs.map((slug) => ({
+    url: `https://gellify.dev/docs/${slug}`,
     lastModified: new Date().toISOString(),
   }));
 
@@ -32,5 +32,5 @@ export default async function sitemap() {
     lastModified: new Date().toISOString(),
   }));
 
-  return [...routes, ...notes];
+  return [...routes, ...docs];
 }
