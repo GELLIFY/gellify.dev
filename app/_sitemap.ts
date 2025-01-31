@@ -23,7 +23,7 @@ export default async function sitemap() {
   const slugs = await getDocsSlugs(docsDirectory);
 
   const docs = slugs.map((slug) => ({
-    url: `https://gellify.dev/docs/${slug}`,
+    url: `https://gellify.dev/docs/${slug}`.replace("/.", ""),
     lastModified: new Date().toISOString(),
   }));
 
@@ -32,5 +32,5 @@ export default async function sitemap() {
     lastModified: new Date().toISOString(),
   }));
 
-  return [...routes, ...docs];
+  return [...docs, ...routes];
 }

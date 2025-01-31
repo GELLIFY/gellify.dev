@@ -15,6 +15,7 @@ import LaunchUI from "./logos/launch-ui";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Search } from "@/components/search";
+import { SearchDialog } from "./search-dialog";
 
 export function Navbar() {
   return (
@@ -42,9 +43,9 @@ export function Navbar() {
                           acme-app
                         </div>
                         <p className="text-sm leading-tight text-muted-foreground">
-                          A web development stack focused
-                          on simplicity, modularity, and full-stack typesafety.
-                          The core pieces are Next.js, NeonDB with Drizzle, and Clerk.js.
+                          A web development stack focused on simplicity,
+                          modularity, and full-stack typesafety. The core pieces
+                          are Next.js, NeonDB with Drizzle, and Clerk.js.
                         </p>
                       </a>
                     </NavigationMenuLink>
@@ -55,10 +56,7 @@ export function Navbar() {
                   <ListItem href="/docs/installation" title="Installation">
                     How to install dependencies and structure your app.
                   </ListItem>
-                  <ListItem
-                    href="/docs/first-steps"
-                    title="First Steps"
-                  >
+                  <ListItem href="/docs/first-steps" title="First Steps">
                     Here is the bare minimum to get your app working.
                   </ListItem>
                 </ul>
@@ -66,7 +64,6 @@ export function Navbar() {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-
       </div>
 
       <Search />
