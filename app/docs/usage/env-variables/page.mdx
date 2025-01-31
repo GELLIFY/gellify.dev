@@ -1,0 +1,28 @@
+# Environment Variables
+
+Create T3 App uses its own package [@t3-oss/env-nextjs↗](https://env.t3.gg/) along with [zod↗](https://zod.dev/) under the hood for validating environment variables at runtime and buildtime by providing a simple logic in `src/env.js`.
+
+## env.js
+
+_TLDR;_ If you want to add a new environment variable, you must add a validator for it in `src/env.js`, and then add the KV-pair in `.env`
+
+```tsx
+import { createEnv } from "@t3-oss/env-nextjs";
+import { z } from "zod";
+
+export const env = createEnv({
+  server: {
+    NODE_ENV: z.enum(["development", "test", "production"]),
+  },
+  client: {
+    // NEXT_PUBLIC_CLIENTVAR: z.string(),
+  },
+  runtimeEnv: {
+    NODE_ENV: process.env.NODE_ENV,
+  },
+});
+```
+
+T3 Env uses the `createEnv` function to create the schema validate both client and server-side environment variables
+
+> ℹ️ For more information about how createEnv works internally, check out the T3 Env↗ docs
