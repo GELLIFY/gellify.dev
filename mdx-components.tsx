@@ -18,19 +18,19 @@ const components = {
   ),
   h2: (props: HeadingProps) => (
     <h2
-      className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 mt-4 mb-2"
+      className="scroll-m-20 border-b pb-2 text-2xl font-semibold tracking-tight first:mt-0 mt-4 mb-2"
       {...props}
     />
   ),
   h3: (props: HeadingProps) => (
     <h3
-      className="scroll-m-20 text-2xl font-semibold tracking-tight mt-4 mb-2"
+      className="scroll-m-20 text-xl font-semibold tracking-tight mt-4 mb-2"
       {...props}
     />
   ),
   h4: (props: HeadingProps) => (
     <h4
-      className="scroll-m-20 text-xl font-semibold tracking-tight mt-6 mb-2"
+      className="scroll-m-20 text-lg font-semibold tracking-tight mt-6 mb-2"
       {...props}
     />
   ),

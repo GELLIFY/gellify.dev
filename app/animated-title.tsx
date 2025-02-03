@@ -2,7 +2,7 @@ export function AnimatedTitle({ title = "Matteo Badini" }: { title?: string }) {
   return (
     <h1 className="font-medium transition-element">
       {/* Tailwind won't seam to pickup classes in MDX, put the here as temp workaroud */}
-      <span className="sr-only text-3xl">{title}</span>
+      <span className="sr-only text-2xl text-xl text-lg">{title}</span>
       <span aria-hidden="true" className="block overflow-hidden group relative">
         <span className="inline-block transition-all duration-300 ease-in-out group-hover:-translate-y-full whitespace-nowrap">
           {title.split("").map((letter, index) => (

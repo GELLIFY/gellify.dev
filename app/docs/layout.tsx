@@ -11,8 +11,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <SidebarTrigger />
           <AnimatedTitle />
         </div>
-        <div className="p-6 pt-0 overflow-auto h-[calc(100svh-var(--header-height)-60px)]">
-          {children}
+        <div className="relative grid grid-cols-4 gap-6 p-6 pt-0 overflow-auto h-[calc(100svh-var(--header-height)-60px)]">
+          <section className="col-span-3">{children}</section>
+          {/* <aside className="sticky top-[300px] col-span-1">
+            <h4>On this page</h4>
+
+            <ul>
+              <li></li>
+            </ul>
+          </aside> */}
         </div>
       </main>
     </SidebarProvider>

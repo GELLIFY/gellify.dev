@@ -1,14 +1,5 @@
 import Link from "next/link";
-import {
-  AppWindow,
-  File,
-  Github,
-  Globe,
-  Linkedin,
-  Rocket,
-  Twitter,
-  Youtube,
-} from "lucide-react";
+import { Github, Linkedin, Rocket, Twitter, Youtube } from "lucide-react";
 
 export default function Page() {
   return (
