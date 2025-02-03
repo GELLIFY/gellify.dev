@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ViewTransitions } from "next-view-transitions";
 import { Analytics } from "@vercel/analytics/react";
 import { Navbar } from "@/components/navbar";
+import { Toaster } from "@/components/ui/sonner"
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://gellify.dev"),
@@ -42,6 +43,7 @@ export default function RootLayout({
           <main className="w-full overflow-hidden top-(--header-height) h-[calc(100svh-var(--header-height))]!">
             {children}
           </main>
+          <Toaster />
           {/* <Footer /> */}
           <Analytics />
         </body>

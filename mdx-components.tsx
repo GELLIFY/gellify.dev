@@ -1,6 +1,7 @@
 import React, { ComponentPropsWithoutRef } from "react";
 import { Link } from "next-view-transitions";
 import { highlight } from "sugar-high";
+import { CodeBlock } from "./components/code-block";
 
 type HeadingProps = ComponentPropsWithoutRef<"h1">;
 type ParagraphProps = ComponentPropsWithoutRef<"p">;
@@ -8,6 +9,8 @@ type ListProps = ComponentPropsWithoutRef<"ul">;
 type ListItemProps = ComponentPropsWithoutRef<"li">;
 type AnchorProps = ComponentPropsWithoutRef<"a">;
 type BlockquoteProps = ComponentPropsWithoutRef<"blockquote">;
+type PreProps = ComponentPropsWithoutRef<"pre">;
+type CodeProps = ComponentPropsWithoutRef<"code">;
 
 const components = {
   h1: (props: HeadingProps) => (
@@ -85,7 +88,12 @@ const components = {
       </a>
     );
   },
-  code: ({ children, ...props }: ComponentPropsWithoutRef<"code">) => {
+  pre: ({ children, ...props }: PreProps) => {
+    return (
+      <CodeBlock {...props}>{children}</CodeBlock>
+    );
+  },
+  code: ({ children, ...props }: CodeProps) => {
     const codeHTML = highlight(children as string);
     return (
       <code
