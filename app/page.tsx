@@ -3,7 +3,7 @@ import { Github, Linkedin, Rocket, Twitter, Youtube } from "lucide-react";
 
 export default function Page() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center !h-[calc(100svh-var(--header-height))] p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center h-[calc(100svh-var(--header-height))]! p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <section className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         {/* Logo */}
         <h1 className="font-mono text-2xl">acme-app</h1>

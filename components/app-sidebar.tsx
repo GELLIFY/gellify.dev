@@ -100,7 +100,7 @@ const items = {
 
 export function AppSidebar() {
   return (
-    <Sidebar className="top-[--header-height] !h-[calc(100svh-var(--header-height))]">
+    <Sidebar className="top-(--header-height) h-[calc(100svh-var(--header-height))]!">
       <SidebarContent>
         {/* We create a SidebarGroup for each parent. */}
         {items.navMain.map((item) => (

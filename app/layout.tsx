@@ -39,7 +39,7 @@ export default function RootLayout({
           className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col tracking-tight min-h-screen`}
         >
           <Navbar />
-          <main className="w-full overflow-hidden top-[--header-height] !h-[calc(100svh-var(--header-height))]">
+          <main className="w-full overflow-hidden top-(--header-height) h-[calc(100svh-var(--header-height))]!">
             {children}
           </main>
           {/* <Footer /> */}

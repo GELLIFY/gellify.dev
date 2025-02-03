@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="top-[--header-height] !h-[calc(100svh-var(--header-height))]">
+      <main className="top-(--header-height) h-[calc(100svh-var(--header-height))]!">
         <div className="flex gap-2 p-4 items-center">
           <SidebarTrigger />
           <AnimatedTitle />
