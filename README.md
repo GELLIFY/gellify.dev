@@ -34,3 +34,4 @@ Please remove all of my personal information by running `bun run delete`.
 
 - [ ] Active link on doc sidebar
 - [ ] TOC for docs pages
+- [ ] Add copy button to code snippets
