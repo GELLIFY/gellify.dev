@@ -60,6 +60,10 @@ const items = {
           url: "/docs/usage/shadcn-ui",
         },
         {
+          title: "Drizzle",
+          url: "/docs/usage/drizzle",
+        },
+        {
           title: "NeonDB",
           url: "/docs/usage/neon-db",
         },

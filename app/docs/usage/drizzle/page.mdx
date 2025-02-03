@@ -1,0 +1,59 @@
+# Drizzle
+
+Drizzle is a headless Typescript ORM with [relational↗](https://orm.drizzle.team/docs/rqb) and [SQL-like↗](https://orm.drizzle.team/docs/select) query APIs. It can handle database migrations and schemas, and provides a type safe database client. It also comes with [Drizzle-Kit↗](https://orm.drizzle.team/drizzle-studio/overview), a set of companion tools that help with querying your database.
+
+## Drizzle Client
+
+The Drizzle Client is located at `src/server/db/index.ts`. In this file, you can define your database connection url and connect your schema to the database object.
+
+```ts
+import "dotenv/config";
+
+import { neon, neonConfig } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
+import { env } from "~/env";
+import * as post from "./schema/posts";
+
+export const schema = { ...post };
+
+export const sql = neon(env.DATABASE_URL);
+
+export const db = drizzle({
+  client: sql,
+  schema: schema,
+  logger: env.NODE_ENV !== "production",
+  casing: "snake_case",
+});
+```
+
+## Schema
+
+The Drizzle schema file can be found at `src/server/db/schema/**/*.ts`. This file is where you can define your database schema and models, and connects to the Drizzle Client.
+
+## Drizzle Kit
+
+Drizzle Kit is a collection of command line tools designed to help you manage your database. GELLIFY Stack automatically includes drizzle kit.
+
+```json
+"scripts": {
+  ...
+  "db:generate": "drizzle-kit generate",
+  "db:migrate": "drizzle-kit migrate",
+  "db:push": "drizzle-kit push",
+  "db:studio": "drizzle-kit studio",
+  ...
+},
+```
+
+### Script Explanations
+
+- `db:generate` Generates TypeScript types and models from your database schema, ensuring type safety and easy integration with Drizzle ORM.
+- `db:migrate` Applies pending migrations to your database, keeping your schema in sync with changes and updates in your project.
+- `db:push` Pushes local schema changes directly to the database without needing explicit migration files. This can be useful for quick syncing in development.
+- `db:studio` Opens a visual interface for managing and inspecting your database tables, data, and relationships.
+
+## Useful Resources
+
+- Drizzle Docs [https://orm.drizzle.team/docs/overview↗](https://orm.drizzle.team/docs/overview)
+- Drizzle GitHub [https://github.com/drizzle-team/drizzle-orm↗](https://github.com/drizzle-team/drizzle-orm)
+- Drizzle Kit Migration Guide	[https://orm.drizzle.team/docs/kit-overview↗](https://orm.drizzle.team/docs/kit-overview)
