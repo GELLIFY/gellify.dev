@@ -15,11 +15,10 @@ import LaunchUI from "./logos/launch-ui";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Search } from "@/components/search";
-import { SearchDialog } from "./search-dialog";
 
 export function Navbar() {
   return (
-    <header className="flex sticky top-0 z-50 w-full items-center border-b bg-background p-4 justify-between gap-4">
+    <header className="flex sticky top-0 z-50 w-full items-center border-b  p-4 justify-between gap-4">
       <div className="flex gap-4 items-center flex-1">
         <div className="flex gap-2 items-center">
           <LaunchUI />
@@ -56,7 +55,7 @@ export function Navbar() {
                   <ListItem href="/docs/installation" title="Installation">
                     How to install dependencies and structure your app.
                   </ListItem>
-                  <ListItem href="/docs/first-steps" title="First Steps">
+                  <ListItem href="/docs/usage/first-steps" title="First Steps">
                     Here is the bare minimum to get your app working.
                   </ListItem>
                 </ul>
