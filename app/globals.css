@@ -105,6 +105,13 @@
   }
 }
 
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
 pre {
   background-color: #16161e;
   border-radius: 0.5rem;

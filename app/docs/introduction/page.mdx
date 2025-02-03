@@ -1,39 +1,40 @@
-# Introduction
+## [The GELLIFY Stack](/docs/introduction#the-gellify-stack)
 
-Welcome to the documentation for our Next.js Enterprise Template! This template is a production-ready foundation for building scalable web applications using modern technologies.
+The “GELLIFY Stack” is a web development stack made by [Matteo Badini↗](https://x.com/badini_matteo) focused on simplicity, modularity, and full-stack typesafety.
 
-## What's Included
+The core pieces are [Next.js↗](https://nextjs.org/) and [TypeScript↗](https://typescriptlang.org/). [Shadcn/ui↗](https://ui.shadcn.com/) with [Tailwind CSS↗](https://tailwindcss.com/) is our building block for beautifull and accessible designs.
+If you’re doing anything resembling backend, [Neon↗](https://neon.tech), [Drizzle↗](https://orm.drizzle.team/), and [Clerk↗](https://clerk.com/) are great additions too.
 
-Our template combines best-in-class technologies and practices:
+You may have noticed that there are a… lot of pieces. That’s by design. Swap pieces in and out as you need - this stack is modular at its core :)
 
-- **Next.js 14+** - React framework with App Router and Server Components
-- **TypeScript** - For type safety and better developer experience
-- **Shadcn/UI** - High-quality, customizable UI components
-- **NeonDB** - Serverless Postgres database
-- **Drizzle ORM** - TypeScript ORM for SQL databases
-- **Clerk** - Authentication and user management
-- **Tailwind CSS** - Utility-first CSS framework
+## So… what is create-gellify-app? A template?
 
-## Key Features
+Yes! `create-gellify-app` is a template built by seasoned GELLIFY devs to streamline the setup of a modular new products.
+This means each piece is optional, and the “template” can be customized on your specific needs.
 
-- 🚀 Full-stack TypeScript development
-- 🔐 Authentication and authorization
-- 📚 Database integration with type safety
-- 🎨 Beautiful and accessible UI components
-- 🔍 SEO optimization
-- 📱 Responsive design
-- 🏗️ Modular architecture
-- ⚡ Performance optimized
+After countless projects and many years on this tech, we have lots of opinions and insights. We’ve done our best to encode them into this template.
 
-## Why This Template?
+This is NOT an all-inclusive template. We expect you to bring your own libraries that solve the needs of YOUR application.
+While we don’t want to prescribe solutions to more specific problems like state management and deployment, we do have some recommendations listed here.
 
-This template solves common challenges in enterprise applications:
+## T3 Axioms
 
-- **Type Safety**: End-to-end type safety with TypeScript
-- **Authentication**: Secure user management with Clerk
-- **Database**: Serverless Postgres with type-safe queries
-- **UI Components**: Accessible, customizable components
-- **Performance**: Built-in optimizations and best practices
-- **Developer Experience**: Streamlined development workflow
+We’ll be frank - this is an opinionated project. We share a handful of core beliefs around building and we treat them as the basis for our decisions.
 
-Let's get started by [installing the template](/docs/installation)! 
+### Solve Problems
+
+It’s easy to fall into the trap of “adding everything” - we explicitly don’t want to do that.
+Everything added to `create-gellify-app` should solve a specific problem that exists within the core technologies included.
+This means we won’t add things like state libraries (`zustand`, `redux`) but we will add things like Clerk and integrate Drizzle and Neon for you.
+
+### Bleed Responsibly
+
+We love our bleeding edge tech. The amount of speed and, honestly, fun that comes out of new shit is really cool.
+We think it’s important to bleed responsibly, using riskier tech in the less risky parts.
+This means we wouldn’t ⛔️ bet on risky new database tech (SQL is great!). But we happily ✅ bet on shadcn/ui since it’s just components that are trivial to move off.
+
+### Typesafety Isn’t Optional
+
+The stated goal of Create GELLIFY App is to provide the quickest way to start a new full-stack, typesafe web application.
+We take typesafety seriously in these parts as it improves our productivity and helps us ship fewer bugs.
+Any decision that compromises the typesafe nature of Create GELLIFY App is a decision that should be made in a different project.

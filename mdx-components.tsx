@@ -18,7 +18,7 @@ const components = {
   ),
   h2: (props: HeadingProps) => (
     <h2
-      className="scroll-m-20 border-b pb-2 text3xl font-semibold tracking-tight first:mt-0 mt-4 mb-2"
+      className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 mt-4 mb-2"
       {...props}
     />
   ),
@@ -35,10 +35,7 @@ const components = {
     />
   ),
   p: (props: ParagraphProps) => (
-    <p
-      className="leading-7 [&:not(:first-child)]:mt-6 text-muted-foreground"
-      {...props}
-    />
+    <p className="leading-7 mt-4 text-muted-foreground" {...props} />
   ),
   ol: (props: ListProps) => (
     <ol
