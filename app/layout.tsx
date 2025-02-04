@@ -1,7 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { ViewTransitions } from "next-view-transitions";
 import { Analytics } from "@vercel/analytics/react";
 import { Navbar } from "@/components/navbar";
 import { Toaster } from "@/components/ui/sonner"
@@ -34,7 +33,6 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ViewTransitions>
       <html lang="en">
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col tracking-tight min-h-screen`}
@@ -48,6 +46,5 @@ export default function RootLayout({
           <Analytics />
         </body>
       </html>
-    </ViewTransitions>
   );
 }

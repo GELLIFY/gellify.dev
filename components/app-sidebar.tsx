@@ -1,13 +1,8 @@
 import {
   Sidebar,
   SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { SidebarNavigation } from "./sidebar-navigation";
 
 // Menu items.
 const items = {
@@ -64,8 +59,8 @@ const items = {
           url: "/docs/usage/drizzle",
         },
         {
-          title: "NeonDB",
-          url: "/docs/usage/neon-db",
+          title: "Neon",
+          url: "/docs/usage/neon",
         },
         {
           title: "Clerk",
@@ -106,23 +101,7 @@ export function AppSidebar() {
   return (
     <Sidebar className="top-(--header-height) h-[calc(100svh-var(--header-height))]!">
       <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
-        {items.navMain.map((item) => (
-          <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {item.items.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={item.isActive}>
-                      <a href={item.url}>{item.title}</a>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
+        <SidebarNavigation items={items.navMain} />
       </SidebarContent>
     </Sidebar>
   );

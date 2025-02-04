@@ -33,6 +33,22 @@ The first step is to run `pnpm db:push` to push your schema.
 pnpm run db:push
 ```
 
+Your app is already configured to talk to Neon and has a local Postgres via Docker for local development, we get you started. No initial setup on your part is needed.
+
+Sooner or later you will have to create a remote instance to deploy to. Here the basic steps:
+
+
+1. If you're already signed up or coming to Neon from Azure, you can skip ahead to Step 2.<br />
+   If you haven't signed up yet, you can sign up for free here: [Create a Neon Account↗](https://console.neon.tech/signup)
+
+2. Create a Neon project and get the necessary `DATABASE_URL`
+
+Once everything is completed you can update the `.env` with Clerk variables to point to your remote DB instance.
+
+```
+DATABASE_URL=***
+```
+
 ### Authentication
 
 Your app includes Clerk, we get you started. This is one of the simplest providers, but it still requires a bit of initial setup on your part.
