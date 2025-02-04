@@ -87,19 +87,19 @@ const items = {
       items: [
         {
           title: "Vercel",
-          url: "/deployment/vercel",
+          url: "/docs/deployment/vercel",
         },
         {
           title: "Azure",
-          url: "/deployment/azure",
+          url: "/docs/deployment/azure",
         },
         {
           title: "AWS",
-          url: "/deployment/aws",
+          url: "/docs/deployment/aws",
         },
         {
           title: "Docker",
-          url: "/deployment/docker",
+          url: "/docs/deployment/docker",
         },
       ],
     },
