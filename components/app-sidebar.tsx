@@ -21,6 +21,10 @@ const items = {
           url: "/docs/introduction",
         },
         {
+          title: "Why this template?",
+          url: "/docs/why",
+        },
+        {
           title: "Installation",
           url: "/docs/installation",
         },
