@@ -27,10 +27,6 @@ const items = {
           title: "Reccomendations",
           url: "/docs/reccomendations",
         },
-        {
-          title: "FAQ",
-          url: "/docs/faq",
-        },
       ],
     },
     {
