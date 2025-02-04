@@ -1,5 +1,15 @@
+# First Steps
+
 You just scaffolded a new GELLIFY App and are ready to go. Here is the bare minimum to get your app working.
-First thing copy the `.env.example` into a new `.env`
+
+## Requirements
+
+- Docker or Podman
+- Node Version Manager (fnm reccomended to switch version automagically)
+
+## Getting started
+
+First you have to create a copy of the environment variables.
 
 ```sh
 cp .env.example .env
@@ -7,17 +17,23 @@ cp .env.example .env
 
 Then follow the instruction below to fill the `.env` with the required pieces to get you started.
 
-## Database
+### Database
 
 GELLIFY app will come with a `start-localstack.sh` bash script that can create a docker container with a database for local development.
 If you already have a database, feel free to delete this file and put your database credentials in `.env`.
 
-### Drizzle
+```sh
+./start-localstack.sh
+```
 
 The `.env` file in your project directory already contains a valid DB url for local development via Docker.
 The first step is to run `pnpm db:push` to push your schema.
 
-## Authentication
+```sh
+pnpm run db:push
+```
+
+### Authentication
 
 Your app includes Clerk, we get you started. This is one of the simplest providers, but it still requires a bit of initial setup on your part.
 Of course, if you prefer to use a different auth provider, you can also opt-out of Clerk and use something link [NextAuth.js](https://next-auth.js.org/) instead.
@@ -37,10 +53,16 @@ You will need to:
    Here, Clerk provides various options for setting up your sign-up and sign-in flows. You can choose to use email, phone, or username as [identifiers](https://clerk.com/docs/authentication/configuration/sign-up-sign-in-options#identifiers), and you can enable [social authentication providers](https://clerk.com/docs/authentication/social-connections/overview).
    Once the application is created, you can also customize your authentication flow by selecting different authentication strategies, verification methods, and more. [Learn more about sign-up and sign-in options](https://clerk.com/docs/authentication/configuration/sign-up-sign-in-options).
 
-For production deployment, follow the [official documentation↗](https://clerk.com/docs/deployments/overview#main)
+Once everything is completed update the `.env` with Clerk variables
+
+```
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_***
+CLERK_SECRET_KEY=sk_test_***
+```
 
 ## Editor Setup
 
+We recommended using [Cursor↗](https://www.cursor.com/) a fork of VSCode with a deeper integration with different AI models. We also provide a `.cursorrules` file to give the AI the necessary context on technologies, patterns, conventions...
 The following extensions are recommended for an optimal developer experience. The links below provide editor specific plugin support.
 
 - [Tailwind CSS IntelliSense Extension↗](https://tailwindcss.com/docs/editor-setup)
@@ -49,4 +71,4 @@ The following extensions are recommended for an optimal developer experience. Th
 
 ## Next Steps
 
-Have a look around the Create GELLIFY App docs, as well as the docs of the packages that your app includes.
+Have a look around the docs, as well as the docs of the packages that your app includes.

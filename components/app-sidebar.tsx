@@ -25,20 +25,16 @@ const items = {
           url: "/docs/why",
         },
         {
-          title: "Installation",
-          url: "/docs/installation",
-        },
-        {
           title: "Project Structure",
           url: "/docs/project-structure",
         },
         {
-          title: "FAQ",
-          url: "/docs/faq",
+          title: "Reccomendations",
+          url: "/docs/reccomendations",
         },
         {
-          title: "Other Reccomendations",
-          url: "/docs/other-reccomendations",
+          title: "FAQ",
+          url: "/docs/faq",
         },
       ],
     },
@@ -93,10 +89,10 @@ const items = {
           title: "Azure",
           url: "/docs/deployment/azure",
         },
-        {
-          title: "AWS",
-          url: "/docs/deployment/aws",
-        },
+        // {
+        //   title: "AWS",
+        //   url: "/docs/deployment/aws",
+        // },
         {
           title: "Docker",
           url: "/docs/deployment/docker",
