@@ -39,6 +39,10 @@ Drizzle is to SQL what TypeScript is to JS. It created a developer experience th
 
 Drizzle provides a whole suite of tools making daily interactions with your database easier. Notably, the Drizzle Client is responsible for querying and making SQL so easy you’ll barely notice you’re using it, and Drizzle Studio is a convenient GUI for your database that lets you read and manipulate your data quickly without having to write code.
 
+**Why not Prisma?**
+
+Prisma needs a generation step to be typesafe where Drizzle is 100% typescript. Prisma handle query under the hood, making impossible for the Developer to optimize or take control of a given query.
+
 ### 🐘 Neon
 
 NeonDB is a next-gen PostgreSQL database offering branching, autoscaling, and built-in monitoring—making development smoother and more efficient. With Git-like database branches, teams can test features without affecting production. Autoscaling ensures optimal performance while keeping costs low, and real-time monitoring eliminates the need for extra tools.

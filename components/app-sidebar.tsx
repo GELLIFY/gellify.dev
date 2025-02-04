@@ -20,6 +20,10 @@ const items = {
           url: "/docs/why",
         },
         {
+          title: "Architecture",
+          url: "/docs/architecture",
+        },
+        {
           title: "Project Structure",
           url: "/docs/project-structure",
         },
