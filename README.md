@@ -37,4 +37,3 @@ Optional: Create a `.env` file and fill out the missing envs.
 - [ ] Building your application pages should be less marketing and more concrete explaination
 - [ ] Finish document the project folder dir
 - [ ] TOC for docs pages
-- [ ] interactive react-flow architecture diagram
