@@ -14,13 +14,17 @@ This application requires Node.js v18.17+.
 
 ```bash
 git clone https://github.com/GELLIFY/gellify.dev.git
-cd site
+cd gellify.dev
 bun install
-bun run delete # Remove all of my notes
+bunx supabase start
 bun dev
 ```
 
-Optional: Create a `.env.local` file with your `POSTGRES_URL` environment variable to store redirects.
+Optional: Create a `.env` file and fill out the missing envs.
+
+```bash
+`cp .env.example .env`
+```
 
 ## License
 
@@ -28,9 +32,9 @@ Optional: Create a `.env.local` file with your `POSTGRES_URL` environment variab
 2. Please do not copy it directly.
 3. Crediting the author is appreciated.
 
-Please remove all of my personal information by running `bun run delete`.
-
 ## TODO
 
-- [ ] Active link on doc sidebar
+- [ ] Building your application pages should be less marketing and more concrete explaination
+- [ ] Finish document the project folder dir
 - [ ] TOC for docs pages
+- [ ] interactive react-flow architecture diagram
