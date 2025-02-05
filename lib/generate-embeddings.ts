@@ -1,5 +1,3 @@
-import { Database, Json } from '@/database.types'
-import { createClient } from '@supabase/supabase-js'
 import { createHash } from 'crypto'
 import dotenv from 'dotenv'
 import { ObjectExpression } from 'estree'
@@ -11,11 +9,13 @@ import { mdxFromMarkdown, MdxjsEsm } from 'mdast-util-mdx'
 import { toMarkdown } from 'mdast-util-to-markdown'
 import { toString } from 'mdast-util-to-string'
 import { mdxjs } from 'micromark-extension-mdxjs'
-import 'openai'
 import OpenAI from 'openai';
 import { basename, dirname, join } from 'path'
 import { u } from 'unist-builder'
 import { filter } from 'unist-util-filter'
+import { eq } from 'drizzle-orm';
+import { pages, pageSections } from './db/schema/pages'
+import { db } from './db'
 
 dotenv.config()
 
@@ -264,34 +264,13 @@ class MarkdownEmbeddingSource extends BaseEmbeddingSource {
 type EmbeddingSource = MarkdownEmbeddingSource
 
 async function generateEmbeddings() {
-  // const argv = await yargs.option('refresh', {
-  //   alias: 'r',
-  //   description: 'Refresh data',
-  //   type: 'boolean',
-  // }).argv
-
   const shouldRefresh = false;
 
-  if (
-    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
-    !process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    !process.env.OPENAI_API_KEY
-  ) {
+  if (!process.env.DATABASE_URL || !process.env.OPENAI_API_KEY) {
     return console.log(
-      'Environment variables NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, and OPENAI_API_KEY are required: skipping embeddings generation'
+      'Environment variables DATABASE_URL and OPENAI_API_KEY are required: skipping embeddings generation'
     )
   }
-
-  const supabaseClient = createClient<Database>(
-    process.env.NEXT_PUBLIC_SUPABASE_URL,
-    process.env.SUPABASE_SERVICE_ROLE_KEY,
-    {
-      auth: {
-        persistSession: false,
-        autoRefreshToken: false,
-      },
-    }
-  )
 
   const embeddingSources: EmbeddingSource[] = [
     ...(await walk('app/docs'))
@@ -315,46 +294,26 @@ async function generateEmbeddings() {
       const { checksum, meta, sections } = await embeddingSource.load()
 
       // Check for existing page in DB and compare checksums
-      const { error: fetchPageError, data: existingPage } = await supabaseClient
-        .from('nods_page')
-        .select('id, path, checksum, parentPage:parent_page_id(id, path)')
-        .filter('path', 'eq', path)
-        .limit(1)
-        .maybeSingle()
-
-      if (fetchPageError) {
-        throw fetchPageError
-      }
-
-      type Singular<T> = T extends any[] ? undefined : T
+      const existingPage = await db.query.pages.findFirst({
+        where: eq(pages.path, path),
+        with: {
+          parentPage: true
+        }
+      });
 
       // We use checksum to determine if this page & its sections need to be regenerated
       if (!shouldRefresh && existingPage?.checksum === checksum) {
-        const existingParentPage = existingPage?.parentPage as Singular<
-          typeof existingPage.parentPage
-        >
-
         // If parent page changed, update it
-        if (existingParentPage?.path !== parentPath) {
+        if (existingPage.parentPage?.path !== parentPath) {
           console.log(`[${path}] Parent page has changed. Updating to '${parentPath}'...`)
-          const { error: fetchParentPageError, data: parentPage } = await supabaseClient
-            .from('nods_page')
-            .select()
-            .filter('path', 'eq', parentPath)
-            .limit(1)
-            .maybeSingle()
+          const parentPage = await db.query.pages.findFirst({
+            where: eq(pages.path, parentPath!)
+          });
 
-          if (fetchParentPageError) {
-            throw fetchParentPageError
-          }
-
-          const { error: updatePageError } = await supabaseClient
-            .from('nods_page')
-            .update({ parent_page_id: parentPage?.id })
-            .filter('id', 'eq', existingPage.id)
-
-          if (updatePageError) {
-            throw updatePageError
+          if (parentPage) {
+            await db.update(pages)
+              .set({ parentPageId: parentPage.id })
+              .where(eq(pages.id, existingPage.id));
           }
         }
         continue
@@ -362,60 +321,43 @@ async function generateEmbeddings() {
 
       if (existingPage) {
         if (!shouldRefresh) {
-          console.log(
-            `[${path}] Docs have changed, removing old page sections and their embeddings`
-          )
+          console.log(`[${path}] Docs have changed, removing old page sections and their embeddings`)
         } else {
           console.log(`[${path}] Refresh flag set, removing old page sections and their embeddings`)
         }
 
-        const { error: deletePageSectionError } = await supabaseClient
-          .from('nods_page_section')
-          .delete()
-          .filter('page_id', 'eq', existingPage.id)
-
-        if (deletePageSectionError) {
-          throw deletePageSectionError
-        }
+        await db.delete(pageSections)
+          .where(eq(pageSections.pageId, existingPage.id));
       }
 
-      const { error: fetchParentPageError, data: parentPage } = await supabaseClient
-        .from('nods_page')
-        .select()
-        .filter('path', 'eq', parentPath)
-        .limit(1)
-        .maybeSingle()
+      const parentPage = await db.query.pages.findFirst({
+        where: eq(pages.path, parentPath!)
+      });
 
-      if (fetchParentPageError) {
-        throw fetchParentPageError
-      }
-
-      // Create/update page record. Intentionally clear checksum until we
-      // have successfully generated all page sections.
-      const { error: upsertPageError, data: page } = await supabaseClient
-        .from('nods_page')
-        .upsert(
-          {
+      // Create/update page record
+      const [page] = await db.insert(pages)
+        .values({
+          checksum: null,
+          path,
+          type,
+          source,
+          meta: meta as any,
+          parentPageId: parentPage?.id,
+        })
+        .onConflictDoUpdate({
+          target: pages.path,
+          set: {
             checksum: null,
-            path,
             type,
             source,
-            meta: meta as unknown as Json,
-            parent_page_id: parentPage?.id,
-          },
-          { onConflict: 'path' }
-        )
-        .select()
-        .limit(1)
-        .single()
-
-      if (upsertPageError) {
-        throw upsertPageError
-      }
+            meta: meta as any,
+            parentPageId: parentPage?.id,
+          }
+        })
+        .returning();
 
       console.log(`[${path}] Adding ${sections.length} page sections (with embeddings)`)
       for (const { slug, heading, content } of sections) {
-        // OpenAI recommends replacing newlines with spaces for best results (specific to embeddings)
         const input = content.replace(/\n/g, ' ')
 
         try {
@@ -430,45 +372,32 @@ async function generateEmbeddings() {
 
           const [responseData] = embeddingResponse.data
 
-          const { error: insertPageSectionError, data: pageSection } = await supabaseClient
-            .from('nods_page_section')
-            .insert({
-              page_id: page.id,
+          await db.insert(pageSections)
+            .values({
+              pageId: page.id,
               slug,
               heading,
               content,
-              token_count: embeddingResponse.usage.total_tokens,
+              tokenCount: embeddingResponse.usage.total_tokens,
               embedding: `[${responseData.embedding}]`,
-            })
-            .select()
-            .limit(1)
-            .single()
+            });
 
-          if (insertPageSectionError) {
-            throw insertPageSectionError
-          }
         } catch (err) {
-          // TODO: decide how to better handle failed embeddings
           console.error(
             `Failed to generate embeddings for '${path}' page section starting with '${input.slice(
               0,
               40
             )}...'`
           )
-
           throw err
         }
       }
 
-      // Set page checksum so that we know this page was stored successfully
-      const { error: updatePageError } = await supabaseClient
-        .from('nods_page')
-        .update({ checksum })
-        .filter('id', 'eq', page.id)
+      // Set page checksum
+      await db.update(pages)
+        .set({ checksum })
+        .where(eq(pages.id, page.id));
 
-      if (updatePageError) {
-        throw updatePageError
-      }
     } catch (err) {
       console.error(
         `Page '${path}' or one/multiple of its page sections failed to store properly. Page has been marked with null checksum to indicate that it needs to be re-generated.`
