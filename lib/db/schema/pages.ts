@@ -1,6 +1,6 @@
 import { json, text, timestamp, integer, uuid, vector, index } from 'drizzle-orm/pg-core';
 import { pgTable } from './_table';
-import { relations } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 
 export const pages = pgTable('nods_page', {
   id: uuid('id').primaryKey().defaultRandom(),
@@ -18,7 +18,7 @@ export const pagesRelations = relations(pages, ({ one }) => ({
 	parentPage: one(pages, {
 		fields: [pages.parentPageId],
 		references: [pages.id],
-	}),
+  }),
 }));
 
 export const pageSections = pgTable('nods_page_section', {
@@ -35,6 +35,13 @@ export const pageSections = pgTable('nods_page_section', {
   embeddingIndex: index('embeddingIndex').using(
     'hnsw',
     table.embedding.op('vector_cosine_ops'),
+  ),
+  searchIndex: index('search_index').using(
+    'gin',
+    sql`(
+        setweight(to_tsvector('english', ${table.heading}), 'A') ||
+        setweight(to_tsvector('english', ${table.content}), 'B')
+    )`,
   ),
 })]);
 

@@ -9,7 +9,7 @@ import { SearchIcon } from "lucide-react";
 import { useHotkeys } from "react-hotkeys-hook";
 
 type SearchResult = {
-  title: string;
+  heading: string;
   content: string;
   url: string;
 };
@@ -85,9 +85,9 @@ export function Search() {
                     setOpen(false);
                   }}
                 >
-                  <div className="font-medium">{result.title}</div>
+                  <div className="font-medium">{result.heading}</div>
                   <div className="text-sm text-muted-foreground line-clamp-1">
-                    {result.content}
+                    {result.content.replaceAll("#", "")}
                   </div>
                 </button>
               ))}

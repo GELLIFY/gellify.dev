@@ -15,10 +15,11 @@ import LaunchUI from "./logos/launch-ui";
 import { Button } from "./ui/button";
 import Link from "next/link";
 import { Search } from "@/components/search";
+import { BookOpenIcon, BookTextIcon } from "lucide-react";
 
 export function Navbar() {
   return (
-    <header className="flex sticky top-0 z-50 w-full items-center border-b  p-4 justify-between gap-4">
+    <header className="flex sticky top-0 z-50 w-full items-center border-b p-4 justify-between gap-4">
       <div className="flex gap-4 items-center flex-1">
         <div className="flex gap-2 items-center">
           <LaunchUI />
@@ -28,7 +29,7 @@ export function Navbar() {
         <NavigationMenu className="hidden md:flex">
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Documentation</NavigationMenuTrigger>
+              <NavigationMenuTrigger><BookTextIcon className="size-4 mr-2"/> Documentation</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                   <li className="row-span-3">
