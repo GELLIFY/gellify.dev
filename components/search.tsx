@@ -5,7 +5,7 @@ import { Input } from "./ui/input";
 import { Dialog, DialogContent, DialogTitle } from "./ui/dialog";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
-import { SearchIcon } from "lucide-react";
+import { CornerDownLeftIcon, FileIcon, SearchIcon } from "lucide-react";
 import { useHotkeys } from "react-hotkeys-hook";
 
 type SearchResult = {
@@ -18,6 +18,7 @@ export function Search() {
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [results, setResults] = React.useState<SearchResult[]>([]);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const router = useRouter();
   const inputRef = React.useRef<HTMLInputElement>(null);
 
@@ -26,6 +27,31 @@ export function Search() {
     e.preventDefault();
     setOpen(true);
   });
+
+  // Reset selected index when results change
+  React.useEffect(() => {
+    setSelectedIndex(0);
+  }, [results]);
+
+  // Handle keyboard navigation
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (results.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev + 1) % results.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setSelectedIndex((prev) => (prev - 1 + results.length) % results.length);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const selectedResult = results[selectedIndex];
+      if (selectedResult) {
+        router.push(selectedResult.url);
+        setOpen(false);
+      }
+    }
+  };
 
   React.useEffect(() => {
     if (open && inputRef.current) {
@@ -41,7 +67,9 @@ export function Search() {
     }
 
     try {
-      const response = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}`);
+      const response = await fetch(
+        `/api/search?q=${encodeURIComponent(searchQuery)}`
+      );
       const data = await response.json();
       setResults(data);
     } catch (error) {
@@ -63,14 +91,15 @@ export function Search() {
         </kbd>
       </Button>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="sm:max-w-[850px] p-0">
-            <DialogTitle className="sr-only">Search Documentation</DialogTitle>
-          <div className="p-4 border-b">
+        <DialogContent className="sm:max-w-2xl p-0">
+          <DialogTitle className="sr-only">Search Documentation</DialogTitle>
+          <div className="p-4">
             <Input
               ref={inputRef}
               placeholder="Search documentation..."
               value={query}
               onChange={(e) => handleSearch(e.target.value)}
+              onKeyDown={handleKeyDown}
               className="border-none focus-visible:ring-0"
             />
           </div>
@@ -79,16 +108,21 @@ export function Search() {
               {results.map((result, index) => (
                 <button
                   key={index}
-                  className="w-full text-left p-2 hover:bg-accent rounded-md"
+                  className={`w-full text-left p-2 hover:bg-accent rounded-md relative ${
+                    index === selectedIndex ? "bg-accent" : ""
+                  }`}
                   onClick={() => {
                     router.push(result.url);
                     setOpen(false);
                   }}
                 >
-                  <div className="font-medium">{result.heading}</div>
-                  <div className="text-sm text-muted-foreground line-clamp-1">
-                    {result.content.replaceAll("#", "")}
-                  </div>
+                    <div className="font-medium gri">{result.heading}</div>
+                    <div className="text-sm text-muted-foreground line-clamp-1 grid-rows-2 max-w-[90%]">
+                      {result.content.replaceAll("#", "")}
+                    </div>
+                  {index === selectedIndex && <div className="absolute right-4 top-5">
+                    <CornerDownLeftIcon className="text-neutral-300" />
+                  </div>}
                 </button>
               ))}
             </div>
@@ -97,4 +131,4 @@ export function Search() {
       </Dialog>
     </>
   );
-} 
+}
