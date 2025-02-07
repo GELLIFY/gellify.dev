@@ -379,7 +379,7 @@ async function generateEmbeddings() {
               heading,
               content,
               tokenCount: embeddingResponse.usage.total_tokens,
-              embedding: `[${responseData.embedding}]`,
+              embedding: responseData.embedding,
             });
 
         } catch (err) {

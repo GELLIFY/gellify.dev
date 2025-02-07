@@ -4,7 +4,7 @@ import { db } from '../db';
 import { cosineDistance, desc, gt, sql } from 'drizzle-orm';
 import { pageSections } from '../db/schema/pages';
 
-const embeddingModel = openai.embedding('text-embedding-ada-002');
+const embeddingModel = openai.embedding('text-embedding-3-small');
 
 const generateChunks = (input: string): string[] => {
   return input
@@ -41,12 +41,12 @@ export const findRelevantContent = async (userQuery: string) => {
     userQueryEmbedded,
   )})`;
 
-  const similarGuides = await db
+  const similarSections = await db
     .select({ name: pageSections.content, similarity })
     .from(pageSections)
-    .where(gt(similarity, 0.5))
+    // .where(gt(similarity, 0.5))
     .orderBy(t => desc(t.similarity))
     .limit(4);
   
-  return similarGuides;
+  return similarSections;
 };

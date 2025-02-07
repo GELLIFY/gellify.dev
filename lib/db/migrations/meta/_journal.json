@@ -5,8 +5,15 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1719997972944,
-      "tag": "0000_yielding_bloodaxe",
+      "when": 1738928907805,
+      "tag": "0000_install-pgvector",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1738928924315,
+      "tag": "0001_cool_frog_thor",
       "breakpoints": true
     }
   ]

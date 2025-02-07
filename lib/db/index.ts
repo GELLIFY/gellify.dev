@@ -4,8 +4,6 @@ import { neon, neonConfig } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import ws from "ws";
 
-import * as resources from "./schema/resources";
-import * as embeddings from "./schema/embeddings";
 import * as pages from "./schema/pages";
 
 let connectionString = process.env.DATABASE_URL!;
@@ -28,13 +26,13 @@ if (process.env.NODE_ENV === "development" || true) {
   neonConfig.webSocketConstructor = ws;
 }
 
-export const schema = { ...resources, ...embeddings, ...pages };
+export const schema = { ...pages };
 
 export const sql = neon(connectionString);
 
 export const db = drizzle({
   client: sql,
   schema: schema,
-  logger: process.env.NODE_ENV !== "production",
+  logger: false, // process.env.NODE_ENV !== "production",
   casing: "snake_case",
 });

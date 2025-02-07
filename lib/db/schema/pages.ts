@@ -1,4 +1,4 @@
-import { json, text, timestamp, integer, uuid } from 'drizzle-orm/pg-core';
+import { json, text, timestamp, integer, uuid, vector, index } from 'drizzle-orm/pg-core';
 import { pgTable } from './_table';
 import { relations } from 'drizzle-orm';
 
@@ -28,10 +28,15 @@ export const pageSections = pgTable('nods_page_section', {
   heading: text('heading'),
   content: text('content').notNull(),
   tokenCount: integer('token_count').notNull(),
-  embedding: text('embedding').notNull(),
+  embedding: vector({ dimensions: 1536 }).notNull(),
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
-});
+}, table => [({
+  embeddingIndex: index('embeddingIndex').using(
+    'hnsw',
+    table.embedding.op('vector_cosine_ops'),
+  ),
+})]);
 
 export type Page = typeof pages.$inferSelect;
 export type PageSection = typeof pageSections.$inferSelect;
