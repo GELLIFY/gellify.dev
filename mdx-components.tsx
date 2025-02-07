@@ -1,7 +1,7 @@
 import React, { ComponentPropsWithoutRef } from "react";
-import { Link } from "next-view-transitions";
 import { highlight } from "sugar-high";
 import { CodeBlock } from "./components/code-block";
+import Link from "next/link";
 
 type HeadingProps = ComponentPropsWithoutRef<"h1">;
 type ParagraphProps = ComponentPropsWithoutRef<"p">;
