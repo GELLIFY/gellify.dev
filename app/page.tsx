@@ -12,7 +12,7 @@ export default function Page() {
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2">
             <code className="relative bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold group hover:cursor-pointer hover:bg-black/10 dark:hover:bg-white/10 transition-colors">
-              npx create-next-app [project-name]
+              npx create-next-app@latest --example "https://github.com/GELLIFY/acme-app" [project-name] --use-pnpm
               <span className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity text-xs">
                 Copy
               </span>
@@ -25,7 +25,7 @@ export default function Page() {
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
             className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
+            href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FGELLIFY%2Facme-app&env=DATABASE_URL,NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,CLERK_SECRET_KEY,SERVERVAR,NEXT_PUBLIC_CLIENTVAR&redirect-url=https%3A%2F%2Fgellify.dev"
             target="_blank"
             rel="noopener noreferrer"
           >
