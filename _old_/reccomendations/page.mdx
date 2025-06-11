@@ -1,0 +1,48 @@
+---
+title: Recommendations
+description: Your first document
+---
+
+# Recommendations
+
+The libraries and tools included in `create-gellify-app` provide a strong foundation, but no tech stack is exhaustive. As your project evolves, you may encounter challenges that require specialized solutions. While we encourage starting with our default setup, there are cases where integrating additional libraries, services, or infrastructure can significantly enhance your development experience and product quality.
+
+Below, we share technologies that have proven useful in real-world scenarios. These are not official endorsements but rather suggestions based on practical experience. Always evaluate whether a tool aligns with your specific needs, especially before adopting paid services.
+
+## State Management
+
+- [nuqs](https://nuqs.47ng.com/) Type-safe search params state manager for React.
+
+> ⚠️ Strong opinion. Don't use anything more!
+
+On a more serious note you should consider all of the alternative, URL is a great place to store state and it's sharable. Additionally with RSC and server actions the need of additional storing system is less and less needed.
+
+## Animations
+Animations enhance user experience, making interactions feel more fluid and engaging. Depending on your needs, consider:
+
+- [AutoAnimate↗](https://auto-animate.formkit.com/) If you want to add motion effects with zero configuration, AutoAnimate allows you to introduce smooth transitions with a single line of code. It’s lightweight and ideal for quick UI enhancements without additional complexity.
+- [Framer Motion↗](https://motion.dev/) For more sophisticated animations, Framer Motion provides a declarative API that enables precise control over animations, gestures, and layout transitions. It’s widely adopted for building polished, dynamic interfaces.
+
+## Infrastructure, Databases
+
+Ensuring smooth deployments, scalable infrastructure, and reliable databases is essential. These tools streamline your workflow and improve maintainability.
+
+- [Supabase↗](#) An open-source alternative to Firebase, Supabase provides managed Postgres databases with real-time capabilities, authentication, and storage. It’s an excellent choice for building scalable applications without vendor lock-in.
+- [Trigger.dev↗](#) For background jobs and workflows, Trigger.dev enables serverless job scheduling with first-class TypeScript support. It’s particularly useful for automating tasks within your application.
+- [Upstash↗](#) If your app needs a scalable, low-latency database for caching or rate-limiting, Upstash offers a serverless Redis solution with consumption-based pricing, making it a cost-efficient option.
+
+## Analytics & Monitoring
+
+Understanding user behavior is crucial for optimizing your application. While many analytics providers exist, these stand out for their flexibility and feature sets. Proactively monitoring application health and performance helps prevent issues before they impact users.
+
+- [PostHog↗](#) A self-hostable, open-source analytics platform that provides deep insights into user interactions. It includes features like session replay, feature flags, and product analytics without vendor lock-in.
+- [Sentry↗](#) A robust error-tracking platform that captures exceptions, performance bottlenecks, and logs in real-time, allowing you to diagnose and fix issues efficiently.
+
+## Performance
+
+Optimizing performance ensures a smooth user experience and efficient resource utilization.
+
+- [Next.js Bundle Analyzer↗](#) When optimizing your Next.js app, understanding its bundle size is crucial. This tool visualizes the contents of your JavaScript bundles, helping you identify and eliminate unnecessary dependencies.
+- [React Scan↗](#) For detecting performance bottlenecks in your React app, React Scan provides insights into unnecessary re-renders and component inefficiencies, guiding optimizations.
+
+These recommendations are based on best practices and industry experience, but the right tool for your project depends on your specific needs. Always evaluate options carefully before integration.

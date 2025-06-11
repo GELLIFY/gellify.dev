@@ -1,0 +1,59 @@
+---
+title: Why
+description: Your first document
+---
+
+# Why this template?
+
+We started Create GELLIFY App because we wanted to standadized and modernize our starters. Inspired by [creare-t3-app↗](https://create.t3.gg/), create-next-app, and a general love for typesafety, the team worked hard to build the best possible starting point for new GELLIFY Stack projects.
+
+If you’re interested in using Next.js in a typesafe way, this is the place to start. If you’re curious about any of the specific technology choices we made, read on :)
+
+## Why TypeScript?
+
+JavaScript is hard. Why add more rules?
+
+We firmly believe the experience TypeScript provides will help you be a better developer. It provides live feedback as you write your code by defining expected data types, and either provides helpful autocomplete in your editor or yells at you with red squiggly lines if you’re trying to access a property that doesn’t exist or trying to pass a value of the wrong type, which you would otherwise have to debug further down the line. Whether you’re new to web development or a seasoned pro, the “strictness” of TypeScript will provide a less frustrating, more consistent experience than vanilla JS.
+
+Typesafety makes you faster. If you’re not convinced, you might be using TypeScript wrong…↗
+
+## Why Next.js?
+
+Next.js is our go-to framework because it aligns perfectly with our React and TypeScript expertise, offering a full-stack, extensible solution. It provides production-ready features like image optimization, caching, and ISR, ensuring high performance and scalability. With built-in SEO, optimized data fetching (SSG, SSR, RSC), and seamless integration with our preferred tools (NeonDB, Clerk, shadcn/ui), it enables us to build faster, smarter, and more efficient applications. Simply put, Next.js helps us ship high-quality products with less hassle.
+## Why Shadcn/ui?
+
+shadcn/ui was chosen as our component library due to its flexibility, accessibility, and strong developer experience. It provides unopinionated, customizable components built with TypeScript and Tailwind CSS, ensuring maintainability and efficiency.
+
+The library prioritizes accessibility with built-in ARIA support and WCAG compliance. Its AI-friendly structure simplifies automation, refactoring, and debugging. Unlike traditional UI frameworks, shadcn/ui distributes components as code, reducing dependency bloat and improving long-term maintainability. With seamless theming and dark mode support, it offers unparalleled design customization while keeping performance optimal.
+
+### 🎨 Tailwind CSS
+
+Tailwind feels like “zen-mode CSS”.
+
+By providing building blocks in the form of good default colors, spacing, and other primitives, Tailwind makes it easy to create a good-looking app. And unlike component libraries, it does not hold you back when you want to take your app to the next level and create something beautiful and unique.
+
+Additionally, with its inline-like approach, Tailwind encourages you to style without worrying about naming classes, organizing files, or any other issue not directly tied to the problem you’re trying to solve.
+
+## Why Drizzle/Neon/Clerk/etc?
+
+While we believe in keeping things as simple as possible, we find these pieces being used in every “app” like project we build. create-gellify-app does a great job of letting you adopt the pieces you need.
+
+### 🚀 Drizzle
+
+Drizzle is to SQL what TypeScript is to JS. It created a developer experience that didn’t exist before. By generating types from a user-defined typescript schema compatible with several databases, Drizzle guarantees end-to-end typesafety from your database to your app.
+
+Drizzle provides a whole suite of tools making daily interactions with your database easier. Notably, the Drizzle Client is responsible for querying and making SQL so easy you’ll barely notice you’re using it, and Drizzle Studio is a convenient GUI for your database that lets you read and manipulate your data quickly without having to write code.
+
+**Why not Prisma?**
+
+Prisma needs a generation step to be typesafe where Drizzle is 100% typescript. Prisma handle query under the hood, making impossible for the Developer to optimize or take control of a given query.
+
+### 🐘 Neon
+
+NeonDB is a next-gen PostgreSQL database offering branching, autoscaling, and built-in monitoring—making development smoother and more efficient. With Git-like database branches, teams can test features without affecting production. Autoscaling ensures optimal performance while keeping costs low, and real-time monitoring eliminates the need for extra tools.
+
+It’s affordable, serverless, and fully managed, reducing ops overhead while staying PostgreSQL-compatible. Plus, it’s billable via AWS and Azure, making it a hassle-free choice for both clients and internal projects. 🚀
+
+### 🔐 Clerk
+
+Clerk provides a fully managed authentication service, eliminating setup hassles and ensuring secure, scalable auth in minutes. It seamlessly integrates with Next.js offering built-in 2FA, WebAuthn, and social logins. While it's a paid service, the time saved on setup and maintenance makes it worth the cost. Overall, Clerk keeps auth painless, secure, and efficient, letting us focus on building great products.
