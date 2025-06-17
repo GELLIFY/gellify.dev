@@ -1,64 +1,57 @@
 ---
 title: Why this Template
-description: Your first document
 icon: "CircleHelp"
 ---
 
-# Fumadocs Framework: What is Fumadocs
-URL: /docs/ui/what-is-fumadocs
-Source: https://raw.githubusercontent.com/fuma-nama/fumadocs/refs/heads/main/apps/docs/content/docs/ui/what-is-fumadocs.mdx
+We started Create GELLIFY App because we wanted to standadized and modernize our starters. Inspired by [creare-t3-app↗](https://create.t3.gg/), create-next-app, and a general love for typesafety, the team worked hard to build the best possible starting point for new GELLIFY Stack projects.
 
-Introducing Fumadocs, a docs framework that you can break.
-        
-Fumadocs was created because I wanted a more customisable experience for building docs, to be a docs framework that is not opinionated, **a "framework" that you can break**.
+If you’re interested in using Next.js in a typesafe way, this is the place to start. If you’re curious about any of the specific technology choices we made, read on :)
 
-## Philosophy
+## Why TypeScript?
 
-**Less Abstraction:** Fumadocs expects you to write code and cooperate with the rest of your software.
-While most frameworks are configured with a configuration file, they usually lack flexibility when you hope to tune its details.
-You can’t control how they render the page nor the internal logic. Fumadocs shows you how the app works, instead of a single configuration file.
+JavaScript is hard. Why add more rules?
 
-**Next.js Fundamentals:** It gives you the utilities and a good-looking UI.
-You are still using features of Next.js App Router, like **Static Site Generation**. There is nothing new for Next.js developers, so you can use it with confidence.
+We firmly believe the experience TypeScript provides will help you be a better developer. It provides live feedback as you write your code by defining expected data types, and either provides helpful autocomplete in your editor or yells at you with red squiggly lines if you’re trying to access a property that doesn’t exist or trying to pass a value of the wrong type, which you would otherwise have to debug further down the line. Whether you’re new to web development or a seasoned pro, the “strictness” of TypeScript will provide a less frustrating, more consistent experience than vanilla JS.
 
-**Opinionated on UI:** The only thing Fumadocs UI (the default theme) offers is **User Interface**. The UI is opinionated for bringing better mobile responsiveness and user experience.
-Instead, we use a much more flexible approach inspired by Shadcn UI — [Fumadocs CLI](/docs/cli), so we can iterate our design quick, and welcome for more feedback about the UI.
+Typesafety makes you faster. If you’re not convinced, you might be using TypeScript wrong…↗
 
-## Why Fumadocs
+## Why Next.js?
 
-Fumadocs is designed with flexibility in mind.
+Next.js is our go-to framework because it aligns perfectly with our React and TypeScript expertise, offering a full-stack, extensible solution. It provides production-ready features like image optimization, caching, and ISR, ensuring high performance and scalability. With built-in SEO, optimized data fetching (SSG, SSR, RSC), and seamless integration with our preferred tools (NeonDB, Clerk, shadcn/ui), it enables us to build faster, smarter, and more efficient applications. Simply put, Next.js helps us ship high-quality products with less hassle.
+## Why Shadcn/ui?
 
-You can use `fumadocs-core` as a headless UI library and bring your own styles.
-Fumadocs MDX is also a useful library to handle MDX content in Next.js. It also includes:
+shadcn/ui was chosen as our component library due to its flexibility, accessibility, and strong developer experience. It provides unopinionated, customizable components built with TypeScript and Tailwind CSS, ensuring maintainability and efficiency.
 
-* Many built-in components.
-* Typescript Twoslash, OpenAPI, and Math (KaTeX) integrations.
-* Fast and optimized by default, natively built on App Router.
-* Tight integration with Next.js, you can add it to an existing Next.js project easily.
+The library prioritizes accessibility with built-in ARIA support and WCAG compliance. Its AI-friendly structure simplifies automation, refactoring, and debugging. Unlike traditional UI frameworks, shadcn/ui distributes components as code, reducing dependency bloat and improving long-term maintainability. With seamless theming and dark mode support, it offers unparalleled design customization while keeping performance optimal.
 
-You can read [Comparisons](/docs/ui/comparisons) if you're interested.
+### 🎨 Tailwind CSS
 
-### Documentation
+Tailwind feels like “zen-mode CSS”.
 
-Fumadocs focuses on **authoring experience**, it provides a beautiful theme and many docs automation tools.
+By providing building blocks in the form of good default colors, spacing, and other primitives, Tailwind makes it easy to create a good-looking app. And unlike component libraries, it does not hold you back when you want to take your app to the next level and create something beautiful and unique.
 
-It helps you to iterate your codebase faster while never leaving your docs behind.
-You can take this site as an example of docs site built with Fumadocs.
+Additionally, with its inline-like approach, Tailwind encourages you to style without worrying about naming classes, organizing files, or any other issue not directly tied to the problem you’re trying to solve.
 
-### Blog sites
+## Why Drizzle/Neon/Clerk/etc?
 
-Since Next.js is already a powerful framework, most features can be implemented with **just Next.js**.
+While we believe in keeping things as simple as possible, we find these pieces being used in every “app” like project we build. create-gellify-app does a great job of letting you adopt the pieces you need.
 
-Fumadocs provides additional tooling for Next.js, including syntax highlighting, document search, and a default theme (Fumadocs UI).
-It helps you to avoid reinventing the wheels.
+### 🚀 Drizzle
 
-## When to use Fumadocs
+Drizzle is to SQL what TypeScript is to JS. It created a developer experience that didn’t exist before. By generating types from a user-defined typescript schema compatible with several databases, Drizzle guarantees end-to-end typesafety from your database to your app.
 
-For most of the web applications, vanilla React.js is no longer enough.
-Nowadays, we also wish to have a blog, a showcase page, a FAQ page, etc. With a
-fancy UI that's breathtaking, in these cases, Fumadocs can help you build the
-docs easier, with less boilerplate.
+Drizzle provides a whole suite of tools making daily interactions with your database easier. Notably, the Drizzle Client is responsible for querying and making SQL so easy you’ll barely notice you’re using it, and Drizzle Studio is a convenient GUI for your database that lets you read and manipulate your data quickly without having to write code.
 
-Fumadocs is maintained by Fuma and many contributors, with care on the maintainability of codebase.
-While we don't aim to offer every functionality people wanted, we're more focused on making basic features perfect and well-maintained.
-You can also help Fumadocs to be more useful by contributing!
+**Why not Prisma?**
+
+Prisma needs a generation step to be typesafe where Drizzle is 100% typescript. Prisma handle query under the hood, making impossible for the Developer to optimize or take control of a given query.
+
+### 🐘 Neon
+
+NeonDB is a next-gen PostgreSQL database offering branching, autoscaling, and built-in monitoring—making development smoother and more efficient. With Git-like database branches, teams can test features without affecting production. Autoscaling ensures optimal performance while keeping costs low, and real-time monitoring eliminates the need for extra tools.
+
+It’s affordable, serverless, and fully managed, reducing ops overhead while staying PostgreSQL-compatible. Plus, it’s billable via AWS and Azure, making it a hassle-free choice for both clients and internal projects. 🚀
+
+### 🔐 Clerk
+
+Clerk provides a fully managed authentication service, eliminating setup hassles and ensuring secure, scalable auth in minutes. It seamlessly integrates with Next.js offering built-in 2FA, WebAuthn, and social logins. While it's a paid service, the time saved on setup and maintenance makes it worth the cost. Overall, Clerk keeps auth painless, secure, and efficient, letting us focus on building great products.
