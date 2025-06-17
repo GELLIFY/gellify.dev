@@ -1,39 +1,45 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FGELLIFY%2Fgellify.dev)
+# gellify.dev
 
-# site
+This is a Next.js application generated with
+[Create Fumadocs](https://github.com/fuma-nama/fumadocs).
 
-- **Framework**: [Next.js](https://nextjs.org/)
-- **Database**: [Postgres](https://vercel.com/postgres)
-- **Deployment**: [Vercel](https://vercel.com)
-- **Styling**: [Tailwind CSS](https://tailwindcss.com)
-- **Analytics**: [Vercel Analytics](https://vercel.com/analytics)
-
-## Running Locally
-
-This application requires Node.js v18.17+.
+Run development server:
 
 ```bash
-git clone https://github.com/GELLIFY/gellify.dev.git
-cd gellify.dev
-bun install
-bunx supabase start
-bun dev
+npm run dev
+# or
+pnpm dev
+# or
+yarn dev
 ```
 
-Optional: Create a `.env` file and fill out the missing envs.
+Open http://localhost:3000 with your browser to see the result.
 
-```bash
-`cp .env.example .env`
-```
+## Explore
 
-## License
+In the project, you can see:
 
-1. You are free to use this code as inspiration.
-2. Please do not copy it directly.
-3. Crediting the author is appreciated.
+- `lib/source.ts`: Code for content source adapter, [`loader()`](https://fumadocs.dev/docs/headless/source-api) provides the interface to access your content.
+- `app/layout.config.tsx`: Shared options for layouts, optional but preferred to keep.
 
-## TODO
+| Route                     | Description                                            |
+| ------------------------- | ------------------------------------------------------ |
+| `app/(home)`              | The route group for your landing page and other pages. |
+| `app/docs`                | The documentation layout and pages.                    |
+| `app/api/search/route.ts` | The Route Handler for search.                          |
 
-- [ ] Building your application pages should be less marketing and more concrete explaination
-- [ ] Finish document the project folder dir
-- [ ] TOC for docs pages
+### Fumadocs MDX
+
+A `source.config.ts` config file has been included, you can customise different options like frontmatter schema.
+
+Read the [Introduction](https://fumadocs.dev/docs/mdx) for further details.
+
+## Learn More
+
+To learn more about Next.js and Fumadocs, take a look at the following
+resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
+  features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- [Fumadocs](https://fumadocs.vercel.app) - learn about Fumadocs

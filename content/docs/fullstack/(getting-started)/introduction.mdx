@@ -1,0 +1,38 @@
+---
+title: Introduction
+icon: "Album"
+---
+
+The **GELLIFY Stack** is a modern web development stack designed for **simplicity, modularity, and full-stack TypeScript safety**. Created and refined by [Matteo Badini↗](https://x.com/badini_matteo) and the GELLIFY team, it brings together battle-tested technologies to help developers build **scalable, maintainable, and performant applications** with minimal friction.
+
+At its core, the stack relies on **[Next.js↗](https://nextjs.org/) and [TypeScript↗](https://typescriptlang.org/)**, providing a robust foundation for full-stack development. For UI, **[shadcn/ui↗](https://ui.shadcn.com/)** and **[Tailwind CSS↗](https://tailwindcss.com/)** deliver a flexible and accessible design system. When it comes to backend capabilities, **[Neon↗](https://neon.tech/)** (a serverless PostgreSQL with branching and autoscaling), **[Drizzle↗](https://orm.drizzle.team/)** (a type-safe ORM), and **[Clerk↗](https://clerk.com/)** (a managed authentication service) streamline the process of managing data and users effortlessly.
+
+This stack is intentionally **modular**. Need authentication? Use Clerk. Want a different ORM? Swap out Drizzle. The goal is to **empower developers with best-in-class defaults while keeping things customizable**.
+
+## So… what is `create-gellify-app`? A template?
+
+Yes! `create-gellify-app` is more than just a template—it’s a **curated starting point** for building modular, full-stack applications quickly. Developed from years of experience, it encodes best practices and proven architectural choices into a **streamlined, production-ready setup**.
+
+Each piece of the stack is **optional**, allowing you to customize it based on your needs. We’ve distilled countless hours of development into this template, so you don’t have to start from scratch.
+
+This is **not** a one-size-fits-all solution. You’re encouraged to bring your own tools for things like **state management or deployment**, but we do offer recommendations based on our experience.
+
+## GELLIFY Axioms
+
+We take a strong stance on a few core principles that shape how we build. These guide our decisions and ensure that **`create-gellify-app` remains a reliable, scalable foundation**.
+
+### 🛠 Solve Real Problems
+
+We don’t believe in **adding everything** for the sake of it. Every tool in `create-gellify-app` **solves a real problem** within the core stack. That’s why you’ll find Clerk (authentication) and Neon (database), but not a state management library like Redux—because state management varies widely by project.
+
+### ⚡ Bleed Responsibly
+
+We love using cutting-edge technology—but we do it **wisely**. We won’t gamble on unproven database tech (SQL works great!), but we **do** embrace innovations like **shadcn/ui**, which can be swapped out easily. Our philosophy: **experiment where it’s safe, be pragmatic where it matters.**
+
+### 🔒 Typesafety Is Non-Negotiable
+
+Typesafety isn’t just a feature—it’s a **core value**. `create-gellify-app` is built to ensure a **fully type-safe experience**, minimizing bugs and maximizing productivity. If a decision **compromises TypeScript safety**, it doesn’t belong here.
+
+## Why We Built This
+
+At GELLIFY, we’ve worked on countless projects, refining our approach over time. This stack is the result—a **developer-friendly, production-ready foundation** that lets you focus on building **great products** instead of wrestling with setup and architecture. 🚀

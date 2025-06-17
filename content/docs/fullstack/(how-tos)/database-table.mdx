@@ -1,0 +1,276 @@
+---
+title: How to manage a DB Table
+description: Table schema definition guidelines
+---
+
+## Schema definition
+
+Put the new schema in: `/src/server/db/schema/[feature].ts`.
+
+```ts
+import { createId } from "@paralleldrive/cuid2";
+import { index } from "drizzle-orm/pg-core";
+
+import { timestamps } from "../utils";
+import { createTable } from "./_table";
+
+export const todo_table = createTable(
+  "todo_table",
+  (d) => ({
+    id: d
+      .varchar({ length: 128 })
+      .primaryKey()
+      .$defaultFn(() => createId()),
+
+    text: d.varchar({ length: 256 }).notNull(),
+    completed: d.boolean().notNull(),
+
+    ...timestamps,
+  }),
+  (t) => [index("text_idx").on(t.text)],
+);
+
+export type DB_TodoType = typeof todo_table.$inferSelect;
+export type DB_TodoInsertType = typeof todo_table.$inferInsert;
+```
+
+Then add the new schema to the global export in: `/src/server/db/index.ts`
+
+```ts
+import * as todo from "./schema/todo";
+
+// rest of the code...
+
+export const schema = { ...otherEntities, ...todo };
+
+// rest of the code...
+```
+
+## Validators
+
+- Schema validators must be placed in: `/src/shared/validators/[feature].schema.ts`
+- Use `drizzle-zod` library to reduce boilerplating.
+
+```ts
+import { z } from "@hono/zod-openapi";
+import { createSchemaFactory } from "drizzle-zod";
+import { parseAsBoolean, parseAsString } from "nuqs/server";
+
+import { todo_table } from "@/server/db/schema/todos";
+
+// ref: https://orm.drizzle.team/docs/zod#factory-functions
+const { createSelectSchema, createInsertSchema, createUpdateSchema } =
+  createSchemaFactory({
+    zodInstance: z,
+  });
+
+export const selectTodoSchema = createSelectSchema(todo_table, {
+  id: z.cuid2().openapi({
+    description: "The UUID of the todo.",
+    example: "b3b7c8e2-1f2a-4c3d-9e4f-5a6b7c8d9e0f",
+    param: {
+      in: "path",
+      name: "id",
+    },
+  }),
+  text: (schema) =>
+    schema.openapi({
+      description: "The text of the todo.",
+      example: "Update the doc",
+    }),
+  completed: (schema) =>
+    schema.openapi({
+      description: "The new state of the todo.",
+      example: true,
+    }),
+})
+  .omit({
+    createdAt: true,
+    updatedAt: true,
+    deletedAt: true,
+  })
+  .openapi("Todo");
+
+export const selectTodosSchema = z.object({
+  data: z.array(selectTodoSchema).nullable(),
+});
+
+export const createTodoSchema = createInsertSchema(todo_table, {
+  // We can now use the extended instance
+  text: (schema) =>
+    schema.min(1).trim().openapi({
+      description: "The text of the todo.",
+      example: "Update the doc",
+    }),
+  completed: (schema) =>
+    schema.optional().default(false).openapi({
+      description: "The new state of the todo.",
+      example: false,
+    }),
+}).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+  deletedAt: true,
+});
+
+export const updateTodoSchema = createUpdateSchema(todo_table, {
+  // Overwrites the field, including its nullability
+  id: z.cuid2().openapi({
+    description: "The ID of the todo to update.",
+    example: "b3b7c8e2-1f2a-4c3d-9e4f-5a6b7c8d9e0f",
+    param: {
+      in: "path",
+      name: "id",
+    },
+  }),
+  // Extends schema
+  text: (schema) =>
+    schema.optional().openapi({
+      description: "The new text of the todo.",
+      example: "Update the doc v2",
+    }),
+  // Extends schema before becoming nullable/optional
+  completed: (schema) =>
+    schema.optional().openapi({
+      description: "The new state of the todo.",
+      example: true,
+    }),
+}).omit({
+  createdAt: true,
+  updatedAt: true,
+  deletedAt: true,
+});
+
+export const deleteTodoSchema = z.object({
+  id: z.cuid2().openapi({
+    description: "The UUID of the todo to delete.",
+    example: "b3b7c8e2-1f2a-4c3d-9e4f-5a6b7c8d9e0f",
+    param: {
+      in: "path",
+      name: "id",
+    },
+  }),
+});
+
+// Query filter schema
+export const todoFilterSchema = z.object({
+  text: z.string().nullable().openapi({
+    description: "Filter todo by text",
+    example: "todo",
+  }),
+  completed: z.boolean().nullable().openapi({
+    description: "To show completed todo.",
+    example: true,
+  }),
+  deleted: z.boolean().nullable().openapi({
+    description: "To show deleted todos.",
+    example: true,
+  }),
+});
+
+// Search params filter schema
+export const todoFilterParamsSchema = {
+  text: parseAsString,
+  completed: parseAsBoolean,
+  deleted: parseAsBoolean.withDefault(false),
+};
+
+```
+
+## Queries & Mutations
+
+Queries for a given entity must go into: `/src/server/domain/[feature]/queries.ts`
+
+```ts
+"server-only";
+
+import type z from "zod/v4";
+import { and, desc, eq, ilike, isNotNull, isNull } from "drizzle-orm";
+
+import type { todoFilterSchema } from "@/shared/validators/todo.schema";
+import { db } from "@/server/db";
+import { todo_table } from "@/server/db/schema/todos";
+
+export async function getTodosQuery(filters: z.infer<typeof todoFilterSchema>) {
+  // @ts-expect-error placeholder condition incase we don't have any filters
+  const where = [eq(1, 1)];
+
+  if (filters?.text) {
+    where.push(ilike(todo_table.text, filters.text));
+  }
+
+  if (filters?.completed) {
+    where.push(eq(todo_table.completed, filters.completed));
+  }
+
+  if (filters?.deleted) {
+    where.push(isNotNull(todo_table.deletedAt));
+  } else {
+    where.push(isNull(todo_table.deletedAt));
+  }
+
+  return await db
+    .select({
+      id: todo_table.id,
+      text: todo_table.text,
+      completed: todo_table.completed,
+    })
+    .from(todo_table)
+    .where(and(...where))
+    .orderBy(desc(todo_table.createdAt))
+    .limit(10);
+}
+
+export async function getTodoByIdQuery(params: { id: string }) {
+  const result = await db
+    .select()
+    .from(todo_table)
+    .where(eq(todo_table.id, params.id));
+
+  return result[0];
+}
+```
+
+Mutations for a given entity must go into: `/src/server/domain/[feature]/mutations.ts`
+
+```ts
+"server-only";
+
+import type z from "zod/v4";
+import { eq } from "drizzle-orm";
+
+import type {
+  createTodoSchema,
+  deleteTodoSchema,
+  updateTodoSchema,
+} from "@/shared/validators/todo.schema";
+import { db } from "@/server/db";
+import { todo_table } from "@/server/db/schema/todos";
+
+export async function createTodoMutation(
+  params: z.infer<typeof createTodoSchema>,
+) {
+  return await db.insert(todo_table).values(params).returning();
+}
+
+export async function updateTodoMutation(
+  params: z.infer<typeof updateTodoSchema>,
+) {
+  const { id, ...rest } = params;
+  return await db
+    .update(todo_table)
+    .set(rest)
+    .where(eq(todo_table.id, id))
+    .returning();
+}
+
+export async function deleteTodoMutation(
+  params: z.infer<typeof deleteTodoSchema>,
+) {
+  return await db
+    .update(todo_table)
+    .set({ deletedAt: new Date() }) // soft delete
+    .where(eq(todo_table.id, params.id));
+}
+```
