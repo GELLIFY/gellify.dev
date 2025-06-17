@@ -1,0 +1,18 @@
+{
+  "title": "Template Enterprise",
+  "description": "Template backend Java",
+  "icon": "Server",
+  "root": true,
+  "pages": [
+    "---Getting Started---",
+    "(getting-started)/introduction",
+    "(getting-started)/quick-start",
+    "(getting-started)/why-this-template",
+    "(getting-started)/project-structure",
+    "(getting-started)/architecture",
+    "---Technologies---",
+    "(technologies)/java",
+    "---How-to's---",
+    "(how-tos)/ide-configuration"
+  ]
+}

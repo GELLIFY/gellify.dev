@@ -1,0 +1,30 @@
+{
+  "title": "Template Fullstack",
+  "description": "Template web Next.js",
+  "icon": "Globe",
+  "root": true,
+  "pages": [
+    "---Getting Started---",
+    "(getting-started)/introduction",
+    "(getting-started)/quick-start",
+    "(getting-started)/why-this-template",
+    "(getting-started)/project-structure",
+    "(getting-started)/architecture",
+    "---Technologies---",
+    "(technologies)/next-js",
+    "(technologies)/shadcn-ui",
+    "(technologies)/drizzle-orm",
+    "(technologies)/neon-db",
+    "(technologies)/clerk",
+    "(technologies)/env-variables",
+    "(technologies)/typescript",
+    "---How-to's---",
+    "(how-tos)/ide-configuration",
+    "(how-tos)/rest-api",
+    "(how-tos)/database-table",
+    "(how-tos)/validate-data",
+    "(how-tos)/auth-permission",
+    "(how-tos)/deploy-vercel",
+    "(how-tos)/deploy-azure"
+  ]
+}
