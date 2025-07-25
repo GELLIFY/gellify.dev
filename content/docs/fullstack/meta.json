@@ -24,6 +24,7 @@
     "(how-tos)/database-table",
     "(how-tos)/validate-data",
     "(how-tos)/auth-permission",
+    "(how-tos)/unit-and-integration-test",
     "(how-tos)/deploy-vercel",
     "(how-tos)/deploy-azure"
   ]
