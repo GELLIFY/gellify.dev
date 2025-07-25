@@ -1,0 +1,196 @@
+---
+title: How to unit and integration test
+description: Table schema definition guidelines
+---
+
+Questa pagina descrive come sono configurati e strutturati i test nel progetto. Il setup copre test unitari, test di integrazione, isolamento del database in memoria e configurazione della coverage.
+
+## Configurations
+
+### Script di test
+
+I test vengono eseguiti tramite Bun, con un file di setup caricato prima dei test:
+
+```json
+"scripts": {
+  "test": "bun test --preload ./src/setup.ts"
+}
+```
+
+### Configurazione bunfig.toml
+
+La configurazione per il test è definita in `bunfig.toml`. Alcuni parametri chiave:
+
+```md
+[test]
+coverage = false                       # Abilita la coverage
+coverageReporter = ["lcov"]            # Report in formato LCOV
+coverageDir = "coverage"               # Directory di output per i report
+coverageThreshold = 0.9                # Copertura minima richiesta (linee e funzioni)
+
+# Percorsi esclusi dalla coverage
+coveragePathIgnorePatterns = [
+  "src/app/**",
+  "src/components/**",
+  "src/hooks/**",
+  "src/instrumentation.ts",
+  "src/middleware.ts",
+  "*.config.js",
+  "*.config.ts",
+  "*.config.cjs",
+]
+```
+
+> ✅ Puoi modificare coverageThreshold per valori personalizzati su linee, funzioni o statements.
+
+## Test Environment Setup
+
+I test (soprattutto quelli di integrazione) utilizzano un database SQLite in memoria tramite PGlite, garantendo isolamento e velocità.
+
+```ts
+import { PGlite } from "@electric-sql/pglite";
+import { afterAll, afterEach, beforeEach, mock } from "bun:test";
+import { drizzle } from "drizzle-orm/pglite";
+import { migrate } from "drizzle-orm/pglite/migrator";
+import { reset } from "drizzle-seed";
+
+import { db } from "./server/db";
+import { schema } from "./server/db/schema";
+
+let client: PGlite;
+
+await mock.module("./server/db", () => {
+  client = new PGlite(); // DB in memoria
+  const db = drizzle({
+    client,
+    schema,
+    logger: false,
+    casing: "snake_case",
+  });
+  return { client, db };
+});
+
+beforeEach(async () => {
+  await migrate(db, { migrationsFolder: "src/server/db/migrations" });
+});
+
+afterEach(async () => {
+  await reset(db, schema); // Pulisce tutte le tabelle tra i test
+});
+
+afterAll(async () => {
+  await client.close(); // Chiude la connessione al DB
+});
+```
+
+Laddove un PGLite in memory non fosse sufficiente è possibile integrare facilmente `@testcontainer/postgres` per simulare un DB 1:1 tramite Docker
+
+```ts
+import { PostgreSqlContainer } from "@testcontainers/postgresql";
+import { afterAll, afterEach, beforeEach, mock } from "bun:test";
+import { drizzle } from "drizzle-orm/postgres-js";
+import { migrate } from "drizzle-orm/pglite/migrator";
+import { reset } from "drizzle-seed";
+import postgres from "postgres";
+
+import type { StartedPostgreSqlContainer } from "@testcontainers/postgresql";
+import { db } from "./server/db";
+import { schema } from "./server/db/schema";
+
+let container: StartedPostgreSqlContainer;
+
+await mock.module("./server/db", () => {
+  container = await new PostgreSqlContainer("postgres:17")
+  const connectionString = container.getConnectionUri();
+  const client = postgres(connectionString);
+  const db = drizzle(client, { logger: false, schema });
+  return { client, db };
+});
+
+beforeEach(async () => {
+  await migrate(db, { migrationsFolder: "src/server/db/migrations" });
+});
+
+afterEach(async () => {
+  await reset(db, schema); // Pulisce tutte le tabelle tra i test
+});
+
+afterAll(async () => {
+  await container.stop(); // Spegne il container
+});
+```
+
+## Unit Tests
+
+I test unitari verificano il comportamento di funzioni pure e logica isolata, senza accedere a risorse esterne (DB, file system, ecc.).
+
+### Esempio: testare una funzione che mescola todo
+
+```ts
+describe("shuffleTodos", () => {
+  it("returns a new array with the same items", () => {
+    // ...
+  });
+
+  it("shuffles the array (order may change)", () => {
+    // ...
+  });
+
+  it("handles empty array", () => {
+    // ...
+  });
+
+  it("handles single item array", () => {
+    // ...
+  });
+});
+```
+
+> ✳️ In questo esempio la funzione shuffleTodos è testata in isolamento, usando array mockati.
+
+## Integration Tests
+
+I test di integrazione verificano il comportamento dell’applicazione nella sua interezza, incluso accesso al database, logica dei service, e interazioni tra funzioni.
+
+### Esempio: CRUD dei Todo
+
+```ts
+test("create user", async () => {
+  const todo = await createTodo({ text: "text", completed: false });
+  expect(todo).toBeDefined();
+});
+```
+
+Altri scenari coperti:
+
+* lettura di liste vuote o popolate
+* aggiornamento e soft delete dei record
+* test dell’effetto combinato tra più funzioni
+
+> ℹ️ Ogni test è eseguito su un database pulito, migrato e resettato automaticamente tramite il setup definito.
+
+### Coverage
+
+Anche se disabilitata di default (coverage = false), la coverage può essere abilitata facilmente per monitorare la qualità dei test:
+
+`bun test --coverage`
+
+* I file ignorati sono definiti in coveragePathIgnorePatterns
+* Il report completo è generato nella cartella coverage/
+* Il formato lcov può essere utilizzato per tool come Codecov o Coveralls
+
+> 📈 Imposta coverageThreshold per evitare merge con bassa copertura.
+
+### Best Practices
+
+* ✅ Scrivi test unitari per logica pura, senza dipendenze
+* ✅ Usa test di integrazione per service, DB e logica end-to-end
+* ✅ Mantieni i test veloci, isolati e deterministici
+* ✅ Usa bun --coverage localmente o in CI per monitorare la qualità
+* ❌ Non testare implementazioni, testa comportamenti
+
+### Conclusione
+
+Questa configurazione ti permette di scrivere test efficaci, scalabili e con un feedback rapido. L’approccio misto (unit + integration) garantisce una copertura completa della logica di business e dell’infrastruttura.
+
+Per domande o problemi con l’ambiente di test, consulta il file `src/setup.ts` o la documentazione dei pacchetti usati (`bun`, `drizzle`).
