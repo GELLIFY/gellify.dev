@@ -1,33 +1,72 @@
 ---
 title: How to deploy to Vercel
-description: Table schema definition guidelines
 ---
 
-Vercel is the **perfect deployment platform** for Next.js applications, offering a **seamless developer experience, high-performance hosting, and automatic optimizations**.
-Built by the same team behind Next.js, it provides **zero-config deployments, edge functions, and global CDN caching**, making it an **ideal fit for the GELLIFY Stack** and **INTERNAL** products.
+## Vercel Deployment Guide
 
-## The Benefits of Using Vercel
+This template ships with first-class Vercel support for Preview and Production deployments, plus PR cleanup. Use this when your project selects Vercel as the provider.
 
-### 🚀 Instant Deployments & CI/CD
-- Push to GitHub, and Vercel **automatically deploys your changes**.
-- **Preview environments for every PR**, ensuring smooth collaboration and testing.
-- Built-in **rollback mechanisms** for quick recovery.
+### Overview
+- Preview: `deploy-preview.yml` (on PR open/sync) → creates Neon DB branch, runs migrations, deploys to Vercel, comments Preview URL on PR
+- Production: `deploy-production.yml` (on `main`) → runs CI checks, applies migrations, deploys to Vercel Prod
+- Cleanup: `cleanup-preview.yml` (on PR close) → deletes Neon DB branch; Vercel cleanup step is scaffolded
 
-### 🌍 Global Performance Out of the Box
-- **Edge network** ensures your app is served **close to your users**.
-- **Smart caching & ISR** (Incremental Static Regeneration) for **blazing-fast load times**.
-- **Serverless and edge functions** scale automatically.
+### Prerequisites
+- Vercel account and project linked to this GitHub repo
+- Repo Secrets/Variables
+  - Secrets
+    - `VERCEL_TOKEN`: Vercel personal token
+    - `NEON_API_KEY`: Neon API key
+  - Variables
+    - `NEON_PROJECT_ID`: Neon project ID
+    - (Optional) Any public env variables for Next.js (e.g., `NEXT_PUBLIC_*`)
 
-### 🔧 Zero-Config, Developer-First
-- **Automatic Next.js optimizations** (image handling, middleware, etc.).
-- One-click integrations with databases, authentication, and analytics tools.
-- **Environment variable management** straight from the dashboard.
+### Preview Deployments (PRs)
+Workflow: `.github/workflows/deploy-preview.yml`
+- `prepare_db` job
+  - Creates a Neon branch named `preview/pr-<PR_NUMBER>-<branch>`
+  - Exposes outputs: `neon_branch_id`, `neon_branch_name`, `neon_db_url`, `pr_branch_name`
+  - Runs `pnpm run db:migrate` against the preview DB URL
+- `deploy_vercel` job
+  - Uses composite action `.github/workflows/cd/vercel/deploy-preview`
+  - Pulls Vercel envs, builds, and deploys prebuilt artifacts
+  - Outputs `preview_url`
+- `comment_pr` job
+  - Posts the Vercel Preview URL and Neon branch link on the PR
 
-### 💰 Cost-Effective & Scalable
-- **Generous free tier** with pay-as-you-go scaling.
-- **No need to manage infrastructure**—focus on coding, not DevOps.
-- Works **seamlessly with serverless-first architectures** like NeonDB and Clerk.
+Required Secrets/Vars
+- `VERCEL_TOKEN` (Secret)
+- `NEON_API_KEY` (Secret)
+- `NEON_PROJECT_ID` (Variable)
 
-## Why Vercel for the GELLIFY Stack?
-With Next.js at the heart of our stack, **Vercel is the most natural deployment choice**. It aligns perfectly with our philosophy of **simplicity, performance, and modularity**—letting us focus on building great products without worrying about infrastructure. If you want the best possible hosting for a Next.js app, **Vercel is the answer.**
+Notes
+- The composite action already pulls Vercel envs for the Preview environment using the CLI (`vercel env pull` and `vercel pull`).
+- Ensure any required runtime/build envs are configured in your Vercel project settings.
+
+### Production Deployments (main)
+Workflow: `.github/workflows/deploy-production.yml`
+- `ci_checks` job reuses `.github/workflows/ci.yml` (lint/typecheck/format)
+- `apply_migrations` runs `pnpm run db:migrate` against `secrets.DATABASE_URL`
+- `deploy_vercel_production` uses composite action `.github/workflows/cd/vercel/deploy-production`
+
+Required Secrets
+- `VERCEL_TOKEN`
+- `DATABASE_URL`
+
+Branch Protection (Recommended)
+- In GitHub → Settings → Branches → Branch protection rules
+  - Protect `main`
+  - Require status checks to pass: add the workflow name `CI`
+  - Optionally require PRs before merging
+
+### Cleanup on PR Close
+Workflow: `.github/workflows/cleanup-preview.yml`
+- Deletes the Neon branch associated with the PR
+- Vercel cleanup composite is scaffolded (currently logs TODO)
+
+### Troubleshooting
+- Preview URL missing in PR: verify `VERCEL_TOKEN` is set and the deploy job completed successfully
+- Migrations failing: confirm Neon credentials and that `pnpm run db:migrate` runs locally with the same version
+- Env variable not present at runtime: verify it exists in Vercel Project Settings for the correct environment (Preview/Production)
+
 

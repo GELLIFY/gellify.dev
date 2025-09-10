@@ -26,6 +26,7 @@
     "(how-tos)/auth-permission",
     "(how-tos)/unit-and-integration-test",
     "(how-tos)/deploy-vercel",
-    "(how-tos)/deploy-azure"
+    "(how-tos)/deploy-azure",
+    "(how-tos)/deploy-aws"
   ]
 }
