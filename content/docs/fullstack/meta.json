@@ -5,9 +5,9 @@
   "root": true,
   "pages": [
     "---Getting Started---",
-    "(getting-started)/introduction",
+    "(getting-started)/welcome",
     "(getting-started)/quick-start",
-    "(getting-started)/why-this-template",
+    "(getting-started)/concepts",
     "(getting-started)/project-structure",
     "(getting-started)/architecture",
     "---Technologies---",

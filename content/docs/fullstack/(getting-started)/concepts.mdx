@@ -1,0 +1,30 @@
+---
+title: Concepts
+icon: "Info"
+---
+
+This page introduces the core concepts and terminology used in the Fullstack Template, including the distinction between Server and Client Components, the role of middleware, and the differences between tRPC and REST endpoints. Understanding these concepts will help you navigate and extend the template effectively.
+
+
+### Server Component
+
+A **Server Component** is a React component that runs exclusively on the server. It can securely access server-side resources (like databases or environment variables) and does not include client-side JavaScript by default. Server Components are ideal for data fetching, rendering dynamic content, and keeping sensitive logic on the backend.
+
+### Client Component
+
+A **Client Component** is a React component that runs in the user's browser. It can use browser APIs, manage interactive state, and respond to user events. Client Components are denoted by the `"use client"` directive at the top of the file and are used for interactive UI elements.
+
+### Middleware
+
+**Middleware** is code that runs before a request reaches your route handler or API endpoint. It is used for tasks like authentication, logging, or modifying requests/responses. In this template, middleware can be used in both Next.js (e.g., `middleware.ts`) and Hono (for REST APIs) to enforce security or handle cross-cutting concerns.
+
+### tRPC Endpoint
+
+A **tRPC Endpoint** is a type-safe API route defined using the tRPC library. It allows you to call backend functions directly from the frontend with full TypeScript support, eliminating the need for manual API schemas. tRPC endpoints are ideal for building complex, typesafe APIs within your app.
+
+### REST Endpoint
+
+A **REST Endpoint** is a traditional HTTP API route that follows RESTful conventions (using HTTP verbs like GET, POST, PUT, DELETE). In this template, REST endpoints are implemented using Hono and are documented/validated with Zod and OpenAPI. They are suitable for interoperability, third-party integrations, or when you need a standardized API interface.
+
+---
+

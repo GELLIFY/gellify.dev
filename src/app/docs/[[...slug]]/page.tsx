@@ -8,7 +8,7 @@ import {
 import { notFound } from 'next/navigation';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import { getMDXComponents } from '@/mdx-components';
-import { getGithubLastEdit } from 'fumadocs-core/server';
+import { LLMCopyButton, ViewOptions } from '@/components/ai/page-actions';
 
 export default async function Page(props: {
   params: Promise<{ slug?: string[] }>;
@@ -19,21 +19,21 @@ export default async function Page(props: {
 
   const MDXContent = page.data.body;
 
-  const time = await getGithubLastEdit({
-    owner: 'fuma-nama',
-    repo: 'fumadocs',
-    path: `content/docs/${page.file.path}`,
-  });
-
-  const lastUpdate = time ? { lastUpdate: new Date(time) } : {}
-
+  const { body: Mdx, toc, lastModified } = page.data;
 
   return (
-    <DocsPage toc={page.data.toc} full={page.data.full} {...lastUpdate} tableOfContent={{
+    <DocsPage toc={page.data.toc} full={page.data.full} lastUpdate={lastModified ? new Date(lastModified) : undefined} tableOfContent={{
       style: 'clerk',
     }}>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
+      <div className="flex flex-row gap-2 items-center border-b pb-6">
+        <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
+        <ViewOptions
+          markdownUrl={`${page.url}.mdx`}
+          githubUrl={`https://github.com/GELLIFY/gellify.dev/blob/dev/apps/docs/content/docs/${page.path}`}
+        />
+      </div>
       <DocsBody>
         <MDXContent
           components={getMDXComponents({

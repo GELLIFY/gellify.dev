@@ -5,3 +5,48 @@ icon: "FolderTree"
 ---
 
 # Project Structure
+
+import { File, Folder, Files } from 'fumadocs-ui/components/files';
+import { FileJsonIcon } from 'lucide-react';
+
+<Files>
+  <Folder name="node_modules" disabled />
+  <Folder name="public" disabled />
+  <Folder name="src" defaultOpen>
+    <Folder name="app">
+      <Folder name="[locale]"></Folder>
+      <Folder name="api"></Folder>
+    </Folder>
+    <Folder name="components"></Folder>
+    <Folder name="hooks"></Folder>
+    <Folder name="server">
+      <Folder name="api"></Folder>
+      <Folder name="db"></Folder>
+      <Folder name="domains"></Folder>
+      <Folder name="services"></Folder>
+    </Folder>
+    <Folder name="shared">
+      <Folder name="constants"></Folder>
+      <Folder name="helpers"></Folder>
+      <Folder name="locales"></Folder>
+      <Folder name="types"></Folder>
+      <Folder name="validators"></Folder>
+    </Folder>
+    <File name="env.js" />
+    <File name="instrumentation.ts" />
+    <File name="middleware.ts" />
+    <File name="setup.ts" />
+  </Folder>
+  <File name=".env" />
+  <File name="bunfig.toml" />
+  <File name="components.json" icon={<FileJsonIcon />} />
+  <File name="drizzle.config.ts" />
+  <File name="eslint.config.js" />
+  <File name="next.config.js" />
+  <File name="package.json" icon={<FileJsonIcon />} />
+  <File name="postcss.config.cjs" />
+  <File name="prettier.config.js" />
+  <File name="tsconfig.json" icon={<FileJsonIcon />} />
+</Files>
+
+---
