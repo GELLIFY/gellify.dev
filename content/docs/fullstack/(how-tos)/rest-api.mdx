@@ -1,6 +1,180 @@
 ---
-title: How to develop a REST API
-description: Table schema definition guidelines
+title: How to build REST APIs
+description: REST API implementation guidelines using Next.js + Hono template
 ---
 
-## REST API
+## Validators (Zod + OpenAPI)
+
+Validators for each feature go in: `/src/shared/validators/[feature].schema.ts`.
+They are in the shared folder because they can be used by both FE and BE to validate input/output.
+They define both request validation and OpenAPI documentation via `@hono/zod-openapi`.
+
+Example:
+
+```ts
+import { z } from "@hono/zod-openapi"; // Extended Zod instance
+import { parseAsBoolean, parseAsString } from "nuqs/server";
+
+export const getTodosSchema = z.object({
+  text: z.string().nullable().optional().openapi({
+    description: "Filter todo by text",
+    example: "todo",
+  }),
+  completed: z.boolean().nullable().optional().openapi({
+    description: "To show completed todo.",
+    example: true,
+  }),
+});
+
+export const todoResponseSchema = z.object({
+  id: z.guid().openapi({
+    description: "Unique identifier of the customer",
+    example: "b3b7c1e2-4c2a-4e7a-9c1a-2b7c1e24c2a4",
+  }),
+  text: z.string().openapi({
+    description: "The text of the todo.",
+    example: "Update the doc",
+  }),
+  completed: z.boolean().openapi({
+    description: "The new state of the todo.",
+    example: true,
+  }),
+});
+
+export const todosResponseSchema = z.object({
+  data: z.array(todoResponseSchema).nullable(),
+});
+```
+
+✅ **Guidelines:**
+
+* Always use `@hono/zod-openapi` to define schema with OpenAPI definitions.
+* Enrich schemas with `.openapi()` metadata for automatic documentation.
+
+---
+
+## Routing & Handlers
+
+All REST endpoints live under: `/src/server/api/rest/routers/[feature].ts`.
+Each route file defines the endpoints for a single entity (e.g. `todos`, `plants`, etc.) and uses the shared Hono app instance.
+
+Example:
+
+```ts
+import { createRoute, OpenAPIHono } from "@hono/zod-openapi";
+
+import type { Context } from "../init";
+import { db } from "@/server/db";
+import {
+  deleteTodo,
+  getTodoById,
+  getTodos,
+  upsertTodo,
+} from "@/server/services/todo-service";
+import { validateResponse } from "@/server/services/validation-service";
+import {
+  getTodoByIdSchema,
+  getTodosSchema,
+  todoResponseSchema,
+  todosResponseSchema,
+  upsertTodoSchema,
+} from "@/shared/validators/todo.schema";
+
+// Hono app instance
+const app = new OpenAPIHono<Context>();
+
+// Route definitions
+app.openapi(
+  createRoute({
+    method: "get",
+    path: "/",
+    summary: "List all todos",
+    operationId: "listTodos",
+    description: "Retrieve a list of todos.",
+    tags: ["Todos"],
+    request: {
+      query: getTodosSchema, // <- validates and describes input
+    },
+    responses: {
+      200: {
+        description: "Retrieve a list of todos.",
+        content: {
+          "application/json": {
+            schema: todosResponseSchema, // <- validates and describes output
+          },
+        },
+      },
+    },
+  }),
+  async (c) => {
+    // parse input params
+    const filters = c.req.valid("query");
+
+    // delegate execution to a shared service
+    const result = await getTodos(db, filters);
+
+    // validate and return response
+    return c.json(validateResponse({ data: result }, todosResponseSchema));
+  },
+);
+
+// ... other endpoints
+
+export const todosRouter = app;
+```
+
+✅ **Guidelines:**
+
+* Always use zod schema for input and output definition and validation.
+* Always implement the actual business logic outside of the router for mantainability.
+* Use appropriate HTTP verbs & codes (POST → 201, DELETE → 204/200).
+
+---
+
+## OpenAPI Integration
+
+Every route and validator automatically contributes to the OpenAPI spec.
+You can access the openapi json at `/api/rest/openapi` or you can interact with it using [Scalar](https://scalar.com/) at `/api/rest/scalar`.
+
+Example setup (`/src/server/api/rest/routers/_app.ts`):
+
+```ts
+import { OpenAPIHono } from "@hono/zod-openapi";
+import { Scalar } from "@scalar/hono-api-reference";
+import { secureHeaders } from "hono/secure-headers";
+
+import { todosRouter } from "./todos";
+
+const routers = new OpenAPIHono();
+
+routers.use(secureHeaders());
+
+routers.doc("/openapi", {
+  // openapi definitions...
+});
+
+routers.get(
+  "/scalar",
+  Scalar({ url: "/api/rest/openapi", pageTitle: "GELLIFY API" }),
+);
+
+routers.route("/todos", todosRouter);
+
+export { routers };
+
+```
+
+✅ **Guidelines:**
+
+* Attach sub-routers to main app in this root file.
+* Expose `/api/docs` in non-production environments.
+* Keep schema examples realistic — they show up in Scalar UI.
+
+---
+
+**Next steps:**
+
+* Add example auth middleware usage.
+* Document error format and handling convention.
+
+*Last updated: today.*
