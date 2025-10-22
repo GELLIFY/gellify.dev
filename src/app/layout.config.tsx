@@ -1,5 +1,5 @@
-import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
-import Image from 'next/image';
+import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
+import Image from "next/image";
 
 /**
  * Shared layout configurations
@@ -12,7 +12,12 @@ export const baseOptions: BaseLayoutProps = {
   nav: {
     title: (
       <>
-        <Image src="/logo-transparent.png" width={24} height={24} alt='gellify logo' />
+        <Image
+          src="/logo-transparent.png"
+          width={24}
+          height={24}
+          alt="gellify logo"
+        />
         Gellify dev
       </>
     ),

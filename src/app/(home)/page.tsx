@@ -1,9 +1,9 @@
-import { Building2, LibraryIcon } from 'lucide-react';
-import Link, { type LinkProps } from 'next/link';
-import Image from 'next/image';
-import { buttonVariants } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import Spot from '@/../public/spot.png';
+import { Building2, LibraryIcon } from "lucide-react";
+import Image from "next/image";
+import Link, { type LinkProps } from "next/link";
+import Spot from "@/../public/spot.png";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 export default function DocsPage(): React.ReactElement {
   return (
@@ -12,9 +12,9 @@ export default function DocsPage(): React.ReactElement {
         <div
           className="absolute bottom-[20%] left-1/2 size-[1200px] origin-bottom bg-fd-primary/30 opacity-30"
           style={{
-            transform: 'rotateX(75deg) translate(-50%, 400px)',
+            transform: "rotateX(75deg) translate(-50%, 400px)",
             backgroundImage:
-              'radial-gradient(50% 50% at center,transparent,var(--color-fd-background)), repeating-linear-gradient(to right,var(--color-fd-primary),var(--color-fd-primary) 1px,transparent 2px,transparent 100px), repeating-linear-gradient(to bottom,var(--color-fd-primary),var(--color-fd-primary) 2px,transparent 3px,transparent 100px)',
+              "radial-gradient(50% 50% at center,transparent,var(--color-fd-background)), repeating-linear-gradient(to right,var(--color-fd-primary),var(--color-fd-primary) 1px,transparent 2px,transparent 100px), repeating-linear-gradient(to bottom,var(--color-fd-primary),var(--color-fd-primary) 2px,transparent 3px,transparent 100px)",
           }}
         />
       </div>
@@ -37,13 +37,13 @@ export default function DocsPage(): React.ReactElement {
         <a
           href="https://github.com/GELLIFY"
           rel="noreferrer noopener"
-          className={cn(buttonVariants({ size: 'lg' }))}
+          className={cn(buttonVariants({ size: "lg" }))}
         >
           Github
         </a>
         <Link
           href="/showcase"
-          className={cn(buttonVariants({ variant: 'outline', size: 'lg' }))}
+          className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
         >
           Showcase
         </Link>
@@ -77,7 +77,7 @@ function Icon({ children }: { children: React.ReactNode }): React.ReactElement {
     <div
       className="mb-2 size-9 rounded-lg border p-1.5 shadow-fd-primary/30"
       style={{
-        boxShadow: 'inset 0px 8px 8px 0px var(--tw-shadow-color)',
+        boxShadow: "inset 0px 8px 8px 0px var(--tw-shadow-color)",
       }}
     >
       {children}
@@ -94,10 +94,10 @@ function Item(
       className="rounded-2xl border border-transparent p-6 shadow-lg"
       style={{
         backgroundImage:
-          'linear-gradient(to right bottom, var(--color-fd-background) 10%, var(--color-fd-accent), var(--color-fd-background) 60%),' +
-          'linear-gradient(to right bottom, rgb(40,40,40) 10%, rgb(180,180,180), rgb(30,30,30) 60%)',
-        backgroundOrigin: 'border-box',
-        backgroundClip: 'padding-box, border-box',
+          "linear-gradient(to right bottom, var(--color-fd-background) 10%, var(--color-fd-accent), var(--color-fd-background) 60%)," +
+          "linear-gradient(to right bottom, rgb(40,40,40) 10%, rgb(180,180,180), rgb(30,30,30) 60%)",
+        backgroundOrigin: "border-box",
+        backgroundClip: "padding-box, border-box",
       }}
     >
       {props.children}
