@@ -1,0 +1,10 @@
+{
+  "title": "Best Practices and Hacks",
+  "description": "List of common problem fixes and best practices",
+  "icon": "Wrench",
+  "root": true,
+  "pages": [
+    "---Sections---",
+    "(sections)/nextjs-local-mobile"
+  ]
+}

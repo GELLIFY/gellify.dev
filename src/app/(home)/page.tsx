@@ -67,6 +67,15 @@ export default function DocsPage(): React.ReactElement {
             The core library of Fumadocs.
           </p>
         </Item>
+          <Item href="/docs/hacks">
+          <Icon>
+            <LibraryIcon className="size-full" />
+          </Icon>
+          <h2 className="mb-2 text-lg font-semibold">Best Practices and Hacks</h2>
+          <p className="text-sm text-fd-muted-foreground">
+            List of common problem fixes and best practices.
+          </p>
+        </Item>
       </div>
     </main>
   );
