@@ -1,7 +1,7 @@
 import { Building2, LibraryIcon } from "lucide-react";
 import Image from "next/image";
 import Link, { type LinkProps } from "next/link";
-import Spot from "@/../public/spot.png";
+import Spot from "public/spot.png";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
